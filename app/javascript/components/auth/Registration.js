@@ -1,5 +1,16 @@
 import React, { Component } from "react";
 import axios from "axios";
+import styled from "styled-components";
+
+const RegisterButton = styled.button`
+  display: block;
+  margin: 8px auto 0px auto;
+`;
+
+const RedirectLoginButton = styled.button`
+  display: block;
+  margin: auto;
+`;
 
 export class Registration extends Component {
   constructor(props) {
@@ -57,25 +68,22 @@ export class Registration extends Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit} className="form-group">
+          <label htmlFor="RegisterInputEmail">Email address</label>
           <input
-            name="name"
-            placeholder="Name"
-            value={this.state.name}
-            onChange={this.handleChange}
-            required
-          ></input>
-
-          <input
+            id="RegisterInputEmail"
+            className="form-control"
             type="email"
             name="email"
-            placeholder="Email"
+            placeholder="Enter Email"
             value={this.state.email}
             onChange={this.handleChange}
             required
           ></input>
-
+          <label htmlFor="RegisterInputPassword">Password</label>
           <input
+            id="RegisterInputPassword"
+            className="form-control"
             type="password"
             name="password"
             placeholder="Password"
@@ -83,17 +91,37 @@ export class Registration extends Component {
             onChange={this.handleChange}
             required
           ></input>
+          <label htmlFor="RegisterInputConfirmPassword">
+            Password Confirmation
+          </label>
 
           <input
+            id="RegisterInputConfirmPassword"
+            className="form-control"
             type="password"
             name="password_confirmation"
-            placeholder="Password confirmation"
+            placeholder="Confirm Password"
             value={this.state.password_confirmation}
             onChange={this.handleChange}
             required
           ></input>
-          <button type="submit">Register</button>
+          <label htmlFor="RegisterInputName">Name</label>
+          <input
+            id="RegisterInputName"
+            className="form-control"
+            name="name"
+            placeholder="Name"
+            value={this.state.name}
+            onChange={this.handleChange}
+            required
+          ></input>
+          <RegisterButton className="btn btn-primary" type="submit">
+            Register
+          </RegisterButton>
         </form>
+        <RedirectLoginButton onClick={() => this.props.handleRegister()}>
+          I already have an account
+        </RedirectLoginButton>
       </div>
     );
   }

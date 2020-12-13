@@ -3,6 +3,20 @@ import { Route, Switch } from "react-router-dom";
 import axios from "axios";
 import Home from "./Home";
 import Dashboard from "./Dashboard";
+import { createGlobalStyle } from "styled-components";
+import ProtectedRoute from "./auth/ProtectedRoute";
+
+const GlobalStyle = createGlobalStyle`
+html {
+  height: 100%;
+}
+body {
+  background-image: linear-gradient(to left, #99ccff, #0099ff);
+  min-height: 100vh;
+  margin:0;
+  overflow: hidden;
+}
+`;
 
 class App extends React.Component {
   constructor() {
@@ -60,11 +74,13 @@ class App extends React.Component {
       loggedInStatus: "NOT_LOGGED_IN",
       user: {},
     });
+    this.props.history.push("/");
   }
 
   render() {
     return (
       <div className="App">
+        <GlobalStyle />
         <Switch>
           <Route
             exact
@@ -73,18 +89,21 @@ class App extends React.Component {
               <Home
                 {...props}
                 handleLogin={this.handleLogin}
-                handleLogout={this.handleLogout}
                 loggedInStatus={this.state.loggedInStatus}
               />
             )}
           />
-          <Route
+          <ProtectedRoute
             exact
             path={"/dashboard"}
-            render={(props) => (
+            loggedInStatus={this.state.loggedInStatus}
+            handleLogin={this.handleLogin}
+            component={(props) => (
               <Dashboard
                 {...props}
-                loggedInStatus={this.state.loggedInStatus}
+                handleLogin={this.handleLogin}
+                handleLogout={this.handleLogout}
+                {...this.state}
               />
             )}
           />
