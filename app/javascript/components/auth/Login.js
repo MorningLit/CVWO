@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 
-const LoginButton = styled.button`
+const LoginButton = styled(Button)`
   display: block;
   margin: 8px auto 0px auto;
 `;
 
-const RedirectRegisterButton = styled.button`
+const RedirectRegisterButton = styled(Button)`
   display: block;
   margin: auto;
 `;
@@ -64,35 +66,34 @@ export class Login extends Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit} className="form-group">
-          <label htmlFor="LoginInputEmail">Email address</label>
-          <input
-            id="LoginInputEmail"
-            className="form-control"
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={this.state.email}
-            onChange={this.handleChange}
-            required
-          ></input>
-          <label htmlFor="LoginInputPassword">Password</label>
-
-          <input
-            id="LoginInputPassword"
-            className="form-control"
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={this.state.password}
-            onChange={this.handleChange}
-            required
-          ></input>
+        <Form onSubmit={this.handleSubmit} className="form-group">
+          <Form.Group controlId="loginEmail">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter email"
+              name="email"
+              value={this.state.email}
+              onChange={this.handleChange}
+              required
+            />
+          </Form.Group>
+          <Form.Group controlId="loginPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              name="password"
+              value={this.state.password}
+              onChange={this.handleChange}
+              required
+            />
+          </Form.Group>
 
           <LoginButton className="btn btn-primary" type="submit">
             Login
           </LoginButton>
-        </form>
+        </Form>
         <RedirectRegisterButton onClick={() => this.props.handleRegister()}>
           Create an account
         </RedirectRegisterButton>

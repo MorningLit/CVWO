@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 
-const RegisterButton = styled.button`
+const RegisterButton = styled(Button)`
   display: block;
   margin: 8px auto 0px auto;
 `;
 
-const RedirectLoginButton = styled.button`
+const RedirectLoginButton = styled(Button)`
   display: block;
   margin: auto;
 `;
@@ -68,57 +70,57 @@ export class Registration extends Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit} className="form-group">
-          <label htmlFor="RegisterInputEmail">Email address</label>
-          <input
-            id="RegisterInputEmail"
-            className="form-control"
-            type="email"
-            name="email"
-            placeholder="Enter Email"
-            value={this.state.email}
-            onChange={this.handleChange}
-            required
-          ></input>
-          <label htmlFor="RegisterInputPassword">Password</label>
-          <input
-            id="RegisterInputPassword"
-            className="form-control"
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={this.state.password}
-            onChange={this.handleChange}
-            required
-          ></input>
-          <label htmlFor="RegisterInputConfirmPassword">
-            Password Confirmation
-          </label>
+        <Form onSubmit={this.handleSubmit} className="form-group">
+          <Form.Group controlId="registrationEmail">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter email"
+              name="email"
+              value={this.state.email}
+              onChange={this.handleChange}
+              required
+            />
+          </Form.Group>
+          <Form.Group controlId="registrationPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              name="password"
+              value={this.state.password}
+              onChange={this.handleChange}
+              required
+            />
+          </Form.Group>
 
-          <input
-            id="RegisterInputConfirmPassword"
-            className="form-control"
-            type="password"
-            name="password_confirmation"
-            placeholder="Confirm Password"
-            value={this.state.password_confirmation}
-            onChange={this.handleChange}
-            required
-          ></input>
-          <label htmlFor="RegisterInputName">Name</label>
-          <input
-            id="RegisterInputName"
-            className="form-control"
-            name="name"
-            placeholder="Name"
-            value={this.state.name}
-            onChange={this.handleChange}
-            required
-          ></input>
-          <RegisterButton className="btn btn-primary" type="submit">
+          <Form.Group controlId="registrationConfirmPassword">
+            <Form.Label>Password Confirmation</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Confirm Password"
+              name="password_confirmation"
+              value={this.state.password_confirmation}
+              onChange={this.handleChange}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group controlId="registrationName">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              placeholder="Name"
+              name="name"
+              value={this.state.name}
+              onChange={this.handleChange}
+              required
+            />
+          </Form.Group>
+
+          <RegisterButton variant="outline-primary" type="submit">
             Register
           </RegisterButton>
-        </form>
+        </Form>
         <RedirectLoginButton onClick={() => this.props.handleRegister()}>
           I already have an account
         </RedirectLoginButton>

@@ -5,6 +5,8 @@ import Home from "./Home";
 import Dashboard from "./Dashboard";
 import { createGlobalStyle } from "styled-components";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import ToDoPage from "./ToDoPage";
+import Profile from "./Profile";
 
 const GlobalStyle = createGlobalStyle`
 html {
@@ -12,9 +14,7 @@ html {
 }
 body {
   background-image: linear-gradient(to left, #99ccff, #0099ff);
-  min-height: 100vh;
-  margin:0;
-  overflow: hidden;
+  height: 100%;
 }
 `;
 
@@ -25,6 +25,7 @@ class App extends React.Component {
     this.state = {
       loggedInStatus: "NOT_LOGGED_IN",
       user: {},
+      loading: true,
     };
 
     this.handleLogin = this.handleLogin.bind(this);
@@ -52,6 +53,9 @@ class App extends React.Component {
             user: {},
           });
         }
+        this.setState({
+          loading: false,
+        });
       })
       .catch((error) => {
         console.log("check login error", error);
@@ -85,6 +89,7 @@ class App extends React.Component {
           <Route
             exact
             path={"/"}
+            handleLogin={this.handleLogin}
             render={(props) => (
               <Home
                 {...props}
@@ -97,11 +102,24 @@ class App extends React.Component {
             exact
             path={"/dashboard"}
             loggedInStatus={this.state.loggedInStatus}
-            handleLogin={this.handleLogin}
+            loading={this.state.loading}
+            component={(props) => <Dashboard {...props} {...this.state} />}
+          />
+          <ProtectedRoute
+            exact
+            path={"/todo"}
+            loggedInStatus={this.state.loggedInStatus}
+            loading={this.state.loading}
+            component={(props) => <ToDoPage {...props} {...this.state} />}
+          />
+          <ProtectedRoute
+            exact
+            path={"/profile"}
+            loggedInStatus={this.state.loggedInStatus}
+            loading={this.state.loading}
             component={(props) => (
-              <Dashboard
+              <Profile
                 {...props}
-                handleLogin={this.handleLogin}
                 handleLogout={this.handleLogout}
                 {...this.state}
               />
