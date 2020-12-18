@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import Button from "react-bootstrap/Button";
@@ -6,12 +6,24 @@ import Form from "react-bootstrap/Form";
 
 const RegisterButton = styled(Button)`
   display: block;
+  width: stretch;
   margin: 8px auto 0px auto;
+  border-color: transparent;
+  background-color: ${(props) => props.theme.splash};
+  color: ${(props) => props.theme.secondaryColor};
 `;
 
 const RedirectLoginButton = styled(Button)`
   display: block;
+  width: stretch;
   margin: auto;
+  border-color: transparent;
+  background-color: ${(props) => props.theme.splash};
+  color: ${(props) => props.theme.secondaryColor};
+`;
+
+const Title = styled.h3`
+  text-align: center;
 `;
 
 export class Registration extends Component {
@@ -69,7 +81,8 @@ export class Registration extends Component {
 
   render() {
     return (
-      <div>
+      <Fragment>
+        <Title>Registration</Title>
         <Form onSubmit={this.handleSubmit} className="form-group">
           <Form.Group controlId="registrationEmail">
             <Form.Label>Email address</Form.Label>
@@ -117,14 +130,12 @@ export class Registration extends Component {
             />
           </Form.Group>
 
-          <RegisterButton variant="outline-primary" type="submit">
-            Register
-          </RegisterButton>
+          <RegisterButton type="submit">Register</RegisterButton>
         </Form>
         <RedirectLoginButton onClick={() => this.props.handleRegister()}>
           I already have an account
         </RedirectLoginButton>
-      </div>
+      </Fragment>
     );
   }
 }

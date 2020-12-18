@@ -1,14 +1,14 @@
 import React from "react";
-import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import styled from "styled-components";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-const Container = styled(Card)`
+const Container = styled.div`
   max-height: 100vh;
-  background-color: pink;
-  width: 30vw;
+  width: stretch;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 `;
 
 const List = styled(ListGroup)`
@@ -18,7 +18,9 @@ const List = styled(ListGroup)`
 `;
 
 const CreateToDoButton = styled(Button)`
-  background-color: grey;
+  background-color: ${(props) => props.theme.splash};
+  border-color: transparent;
+  color: ${(props) => props.theme.secondaryColor};
 `;
 
 export default function toDoList(props) {

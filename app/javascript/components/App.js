@@ -3,19 +3,15 @@ import { Route, Switch } from "react-router-dom";
 import axios from "axios";
 import Home from "./Home";
 import Dashboard from "./Dashboard";
-import { createGlobalStyle } from "styled-components";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import ToDoPage from "./ToDoPage";
 import Profile from "./Profile";
+import styled, { ThemeProvider } from "styled-components";
+import theme from "./theme";
 
-const GlobalStyle = createGlobalStyle`
-html {
-  height: 100%;
-}
-body {
-  background-image: linear-gradient(to left, #99ccff, #0099ff);
-  height: 100%;
-}
+const Background = styled.div`
+  background-color: ${(props) => props.theme.primaryColor};
+  font-family: "Bahnschrift SemiBold";
 `;
 
 class App extends React.Component {
@@ -83,50 +79,51 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
-        <GlobalStyle />
-        <Switch>
-          <Route
-            exact
-            path={"/"}
-            handleLogin={this.handleLogin}
-            render={(props) => (
-              <Home
-                {...props}
-                handleLogin={this.handleLogin}
-                loggedInStatus={this.state.loggedInStatus}
-              />
-            )}
-          />
-          <ProtectedRoute
-            exact
-            path={"/dashboard"}
-            loggedInStatus={this.state.loggedInStatus}
-            loading={this.state.loading}
-            component={(props) => <Dashboard {...props} {...this.state} />}
-          />
-          <ProtectedRoute
-            exact
-            path={"/todo"}
-            loggedInStatus={this.state.loggedInStatus}
-            loading={this.state.loading}
-            component={(props) => <ToDoPage {...props} {...this.state} />}
-          />
-          <ProtectedRoute
-            exact
-            path={"/profile"}
-            loggedInStatus={this.state.loggedInStatus}
-            loading={this.state.loading}
-            component={(props) => (
-              <Profile
-                {...props}
-                handleLogout={this.handleLogout}
-                {...this.state}
-              />
-            )}
-          />
-        </Switch>
-      </div>
+      <ThemeProvider theme={theme}>
+        <Background>
+          <Switch>
+            <Route
+              exact
+              path={"/"}
+              handleLogin={this.handleLogin}
+              render={(props) => (
+                <Home
+                  {...props}
+                  handleLogin={this.handleLogin}
+                  loggedInStatus={this.state.loggedInStatus}
+                />
+              )}
+            />
+            <ProtectedRoute
+              exact
+              path={"/dashboard"}
+              loggedInStatus={this.state.loggedInStatus}
+              loading={this.state.loading}
+              component={(props) => <Dashboard {...props} {...this.state} />}
+            />
+            <ProtectedRoute
+              exact
+              path={"/todo"}
+              loggedInStatus={this.state.loggedInStatus}
+              loading={this.state.loading}
+              component={(props) => <ToDoPage {...props} {...this.state} />}
+            />
+            <ProtectedRoute
+              exact
+              path={"/profile"}
+              loggedInStatus={this.state.loggedInStatus}
+              loading={this.state.loading}
+              component={(props) => (
+                <Profile
+                  {...props}
+                  handleLogout={this.handleLogout}
+                  {...this.state}
+                />
+              )}
+            />
+          </Switch>
+        </Background>
+      </ThemeProvider>
     );
   }
 }

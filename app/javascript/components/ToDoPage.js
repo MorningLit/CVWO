@@ -6,6 +6,7 @@ import axios from "axios";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import update from "immutability-helper";
+import { BsArrowLeft, BsTrash } from "react-icons/bs";
 
 const BackgroundDiv = styled.div`
   display: flex;
@@ -13,36 +14,38 @@ const BackgroundDiv = styled.div`
 `;
 
 const ToDoListSection = styled.div`
-  width: 45vw;
+  flex-basis: 45%;
   height: 100vh;
-  background-color: cornflowerblue;
+  background-color: transparent;
   display: flex;
   justify-content: center;
-  padding: 16px 0;
+  padding: 16px 8px;
 `;
 
 const ToDoViewerSection = styled.div`
-  width: 45vw;
+  flex-basis: 45%;
   height: 100vh;
-  background-color: burlywood;
+  background-color: transparent;
   display: flex;
-  justify-content: center;
-  padding: 16px 0;
+  justify-content: space-between;
+  padding: 16px 8px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+`;
+
+const ToDoFocus = styled(Form)`
+  width: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const DeleteButton = styled(Button)`
   background-color: red;
-  height: 32px;
-`;
-
-const BackButton = styled(Button)`
-  background-color: grey;
-  height: 30px;
 `;
 
 const SaveButton = styled(Button)`
   background-color: green;
-  height: 30px;
 `;
 
 export class ToDoPage extends Component {
@@ -209,9 +212,12 @@ export class ToDoPage extends Component {
 
         {this.state.mode === "CREATE" || this.state.mode === "EDIT" ? (
           <ToDoViewerSection>
-            <BackButton onClick={() => this.viewList()}>back</BackButton>
-
-            <Form onSubmit={this.createTodo} onBlur={this.handleBlur}>
+            <BsArrowLeft
+              onClick={() => this.viewList()}
+              size="40px"
+              cursor="pointer"
+            />
+            <ToDoFocus onSubmit={this.createTodo}>
               <Form.Group controlId="ToDoTitle">
                 <Form.Label>Title</Form.Label>
                 <Form.Control
@@ -240,14 +246,14 @@ export class ToDoPage extends Component {
                 />
               </Form.Group>
               <SaveButton type="submit">Save</SaveButton>
-            </Form>
+            </ToDoFocus>
 
             {this.state.mode === "EDIT" ? (
-              <DeleteButton
+              <BsTrash
                 onClick={() => this.deleteTodo(this.state.mainToDo.id)}
-              >
-                Delete
-              </DeleteButton>
+                size="40px"
+                cursor="pointer"
+              ></BsTrash>
             ) : null}
           </ToDoViewerSection>
         ) : null}

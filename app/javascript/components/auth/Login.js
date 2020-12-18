@@ -1,17 +1,43 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Image from "react-bootstrap/Image";
 
 const LoginButton = styled(Button)`
   display: block;
   margin: 8px auto 0px auto;
+  background-color: ${(props) => props.theme.splash};
+  border-color: transparent;
+  color: ${(props) => props.theme.secondaryColor};
+  width: stretch;
+  &:hover {
+    border-color: transparent;
+  }
 `;
 
 const RedirectRegisterButton = styled(Button)`
   display: block;
   margin: auto;
+  background-color: ${(props) => props.theme.splash};
+  border-color: transparent;
+  color: ${(props) => props.theme.secondaryColor};
+  width: stretch;
+`;
+
+const Title = styled.p`
+  text-align: center;
+  font-weight: bold;
+  font-size: 28px;
+  margin: 0;
+`;
+
+const Logo = styled(Image)`
+  height: 160px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 export class Login extends Component {
@@ -65,7 +91,9 @@ export class Login extends Component {
 
   render() {
     return (
-      <div>
+      <Fragment>
+        <Logo src="folder.png" rounded />
+        <Title>Login</Title>
         <Form onSubmit={this.handleSubmit} className="form-group">
           <Form.Group controlId="loginEmail">
             <Form.Label>Email address</Form.Label>
@@ -97,7 +125,7 @@ export class Login extends Component {
         <RedirectRegisterButton onClick={() => this.props.handleRegister()}>
           Create an account
         </RedirectRegisterButton>
-      </div>
+      </Fragment>
     );
   }
 }

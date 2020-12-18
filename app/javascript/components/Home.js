@@ -13,8 +13,11 @@ const BackgroundDiv = styled.div`
 
 const LoginDiv = styled.div`
   padding: 24px;
-  background-color: #ccccff;
-  border-radius: 30px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  background-color: ${(props) => props.theme.primaryColor};
+  color: ${(props) => props.theme.secondaryColor};
+  border-radius: 10px;
 `;
 
 export class Home extends Component {
@@ -42,9 +45,7 @@ export class Home extends Component {
   render() {
     return (
       <BackgroundDiv className="row">
-        <LoginDiv className="col col-md-4 border border-primary">
-          <h4>Status: {this.props.loggedInStatus}</h4>
-
+        <LoginDiv className="col col-md-4">
           {this.state.register ? (
             <Registration
               handleSuccessfulAuth={this.handleSuccessfulAuth}
