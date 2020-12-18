@@ -40,12 +40,9 @@ const ToDoFocus = styled(Form)`
   justify-content: space-between;
 `;
 
-const DeleteButton = styled(Button)`
-  background-color: red;
-`;
-
 const SaveButton = styled(Button)`
-  background-color: green;
+  background-color: ${(props) => props.theme.splash};
+  border-color: transparent;
 `;
 
 export class ToDoPage extends Component {
@@ -69,6 +66,7 @@ export class ToDoPage extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.readUserData = this.readUserData.bind(this);
     this.createTodo = this.createTodo.bind(this);
+    this.toggleCompleted = this.toggleCompleted.bind(this);
   }
   componentDidMount() {
     this.readUserData();
@@ -112,21 +110,20 @@ export class ToDoPage extends Component {
             $splice: [[0, 0, response.data]],
           });
           this.setState({ currentTodos: todos });
-          this.viewList();
         })
         .catch((error) => {
           console.log("create todo error", error);
         });
     } else if (this.state.mode === "EDIT") {
-      const todo = {
-        title: this.state.mainToDo.title,
-        description: this.state.mainToDo.description,
-        color: this.state.mainToDo.color,
-      };
+      const todo = this.state.mainToDo;
 
       axios
         .put(`http://localhost:3000/api/v1/todos/${this.state.mainToDo.id}`, {
-          todo: todo,
+          todo: {
+            title: todo.title,
+            description: todo.description,
+            color: todo.color,
+          },
         })
         .then((response) => {
           const todoIndex = this.state.currentTodos.findIndex(
@@ -139,6 +136,7 @@ export class ToDoPage extends Component {
         })
         .catch((error) => console.log(error));
     }
+    this.viewList(); // for mobile to go back to focus
     event.preventDefault();
   }
 
@@ -163,13 +161,7 @@ export class ToDoPage extends Component {
 
   viewToDo(data) {
     this.setState({
-      mainToDo: {
-        title: data.title,
-        description: data.description,
-        color: data.color,
-        completed: data.completed,
-        id: data.id,
-      },
+      mainToDo: data,
       mode: data.mode,
     });
   }
@@ -197,6 +189,25 @@ export class ToDoPage extends Component {
     }));
   }
 
+  toggleCompleted(data) {
+    const todo = data;
+    todo.completed = !todo.completed;
+    axios
+      .put(`http://localhost:3000/api/v1/todos/${todo.id}`, {
+        todo: { completed: todo.completed },
+      })
+      .then((response) => {
+        const todoIndex = this.state.currentTodos.findIndex(
+          (x) => x.id === response.data.id
+        );
+        const todos = update(this.state.currentTodos, {
+          [todoIndex]: { $set: todo },
+        });
+        this.setState({ currentTodos: todos });
+      })
+      .catch((error) => console.log(error));
+  }
+
   render() {
     return (
       <BackgroundDiv>
@@ -207,6 +218,7 @@ export class ToDoPage extends Component {
             user={this.props.user}
             todos={this.state.currentTodos}
             viewToDo={this.viewToDo}
+            toggleCompleted={this.toggleCompleted}
           />
         </ToDoListSection>
 

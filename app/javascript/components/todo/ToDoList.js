@@ -26,6 +26,7 @@ const CreateToDoButton = styled(Button)`
 export default function toDoList(props) {
   const list = props.todos.map((item) => {
     item.mode = "EDIT";
+    console.log(item.id);
     return (
       <ListGroup.Item
         action
@@ -33,7 +34,12 @@ export default function toDoList(props) {
         key={item.id}
         onClick={() => props.viewToDo(item)}
       >
-        <Form.Check inline type="checkbox" defaultChecked={item.completed} />
+        <Form.Check
+          inline
+          type="checkbox"
+          defaultChecked={item.completed}
+          onClick={() => props.toggleCompleted(item)}
+        />
         {item.title}
       </ListGroup.Item>
     );
