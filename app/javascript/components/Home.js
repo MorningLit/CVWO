@@ -18,6 +18,8 @@ const LoginDiv = styled.div`
   background-color: ${(props) => props.theme.primaryColor};
   color: ${(props) => props.theme.secondaryColor};
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
 `;
 
 export default function Home(props) {

@@ -4,11 +4,11 @@ import styled from "styled-components";
 import NavBar from "../NavBar";
 import axios from "axios";
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import update from "immutability-helper";
 import { BsArrowLeft, BsTrash } from "react-icons/bs";
 import { CirclePicker } from "react-color";
 import { colors } from "./ColorMap";
+import StyledButton from "../style/StyledButton";
 
 const BackgroundDiv = styled.div`
   display: flex;
@@ -41,11 +41,7 @@ const ToDoFocus = styled(Form)`
   flex-direction: column;
   justify-content: space-between;
   padding: 4px;
-`;
-
-const SaveButton = styled(Button)`
-  background-color: ${(props) => props.theme.splash};
-  border-color: transparent;
+  margin: 2px;
 `;
 
 export class ToDoPage extends Component {
@@ -271,7 +267,7 @@ export class ToDoPage extends Component {
                   width="stretch"
                 />
               </Form.Group>
-              <SaveButton type="submit">Save</SaveButton>
+              <StyledButton type="submit">Save</StyledButton>
             </ToDoFocus>
 
             {this.state.mode === "EDIT" ? (

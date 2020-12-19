@@ -1,26 +1,8 @@
 import React, { Component, Fragment } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-
-const RegisterButton = styled(Button)`
-  display: block;
-  width: stretch;
-  margin: 8px auto 0px auto;
-  border-color: transparent;
-  background-color: ${(props) => props.theme.splash};
-  color: ${(props) => props.theme.secondaryColor};
-`;
-
-const RedirectLoginButton = styled(Button)`
-  display: block;
-  width: stretch;
-  margin: auto;
-  border-color: transparent;
-  background-color: ${(props) => props.theme.splash};
-  color: ${(props) => props.theme.secondaryColor};
-`;
+import StyledButton from "../style/StyledButton";
 
 const Title = styled.h3`
   text-align: center;
@@ -130,11 +112,11 @@ export class Registration extends Component {
             />
           </Form.Group>
 
-          <RegisterButton type="submit">Register</RegisterButton>
+          <StyledButton type="submit">Register</StyledButton>
         </Form>
-        <RedirectLoginButton onClick={() => this.props.handleRegister()}>
+        <StyledButton onClick={() => this.props.handleRegister()}>
           I already have an account
-        </RedirectLoginButton>
+        </StyledButton>
       </Fragment>
     );
   }

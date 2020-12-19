@@ -1,27 +1,20 @@
 import React from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import styled from "styled-components";
-import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { colors } from "./ColorMap";
+import StyledButton from "../style/StyledButton";
 
 const Container = styled.div`
-  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
   width: stretch;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 `;
 
 const List = styled(ListGroup)`
-  display: block;
-  overflow: scroll;
   overflow-x: hidden;
-`;
-
-const CreateToDoButton = styled(Button)`
-  background-color: ${(props) => props.theme.splash};
-  border-color: transparent;
-  color: ${(props) => props.theme.secondaryColor};
 `;
 
 export default function toDoList(props) {
@@ -47,7 +40,7 @@ export default function toDoList(props) {
 
   return (
     <Container>
-      <CreateToDoButton
+      <StyledButton
         onClick={() =>
           props.viewToDo({
             todo: {
@@ -63,7 +56,7 @@ export default function toDoList(props) {
         }
       >
         New ToDo
-      </CreateToDoButton>
+      </StyledButton>
       <List variant="flush">{list}</List>
     </Container>
   );

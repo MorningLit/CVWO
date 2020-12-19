@@ -1,43 +1,16 @@
 import React, { Component, Fragment } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Image from "react-bootstrap/Image";
-
-const LoginButton = styled(Button)`
-  display: block;
-  margin: 8px auto 0px auto;
-  background-color: ${(props) => props.theme.splash};
-  border-color: transparent;
-  color: ${(props) => props.theme.secondaryColor};
-  width: stretch;
-  &:hover {
-    border-color: transparent;
-  }
-`;
-
-const RedirectRegisterButton = styled(Button)`
-  display: block;
-  margin: auto;
-  background-color: ${(props) => props.theme.splash};
-  border-color: transparent;
-  color: ${(props) => props.theme.secondaryColor};
-  width: stretch;
-`;
-
-const Title = styled.p`
-  text-align: center;
-  font-weight: bold;
-  font-size: 28px;
-  margin: 0;
-`;
+import StyledButton from "../style/StyledButton";
 
 const Logo = styled(Image)`
   height: 160px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin: auto;
+`;
+const Title = styled.h3`
+  text-align: center;
 `;
 
 export class Login extends Component {
@@ -118,13 +91,11 @@ export class Login extends Component {
             />
           </Form.Group>
 
-          <LoginButton className="btn btn-primary" type="submit">
-            Login
-          </LoginButton>
+          <StyledButton type="submit">Login</StyledButton>
         </Form>
-        <RedirectRegisterButton onClick={() => this.props.handleRegister()}>
+        <StyledButton onClick={() => this.props.handleRegister()}>
           Create an account
-        </RedirectRegisterButton>
+        </StyledButton>
       </Fragment>
     );
   }
