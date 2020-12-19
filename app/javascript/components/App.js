@@ -4,7 +4,7 @@ import axios from "axios";
 import Home from "./Home";
 import Dashboard from "./Dashboard";
 import ProtectedRoute from "./auth/ProtectedRoute";
-import ToDoPage from "./ToDoPage";
+import ToDoPage from "./todo/ToDoPage";
 import Profile from "./Profile";
 import styled, { ThemeProvider } from "styled-components";
 import defaultTheme from "./theme/defaultTheme";

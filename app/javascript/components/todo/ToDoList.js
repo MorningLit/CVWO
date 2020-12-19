@@ -3,6 +3,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import styled from "styled-components";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { colors } from "./ColorMap";
 
 const Container = styled.div`
   max-height: 100vh;
@@ -26,11 +27,11 @@ const CreateToDoButton = styled(Button)`
 export default function toDoList(props) {
   const list = props.todos.map((item) => {
     item.mode = "EDIT";
-    console.log(item.id);
+    console.log(item);
     return (
       <ListGroup.Item
         action
-        variant="light"
+        variant={colors.get(item.color)}
         key={item.id}
         onClick={() => props.viewToDo(item)}
       >

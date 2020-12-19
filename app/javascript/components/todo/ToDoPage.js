@@ -1,13 +1,14 @@
 import React, { Component } from "react";
-import ToDoList from "./todo/ToDoList";
+import ToDoList from "./ToDoList";
 import styled from "styled-components";
-import NavBar from "./NavBar";
+import NavBar from "../NavBar";
 import axios from "axios";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import update from "immutability-helper";
 import { BsArrowLeft, BsTrash } from "react-icons/bs";
 import { CirclePicker } from "react-color";
+import { colors } from "./ColorMap";
 
 const BackgroundDiv = styled.div`
   display: flex;
@@ -55,7 +56,7 @@ export class ToDoPage extends Component {
       mainToDo: {
         title: "",
         description: "",
-        color: "",
+        color: "#fdfdfe",
         completed: false,
         id: "",
       },
@@ -173,7 +174,7 @@ export class ToDoPage extends Component {
       mainToDo: {
         title: "",
         description: "",
-        color: "",
+        color: "#fdfdfe",
         completed: false,
         id: "",
       },
@@ -250,6 +251,7 @@ export class ToDoPage extends Component {
                   onChange={this.handleChange}
                 />
               </Form.Group>
+
               <Form.Group controlId="ToDoDescription">
                 <Form.Label>Description</Form.Label>
                 <Form.Control
@@ -260,12 +262,14 @@ export class ToDoPage extends Component {
                   onChange={this.handleChange}
                 />
               </Form.Group>
+
               <Form.Group controlId="ToDoColor">
                 <Form.Label>Color</Form.Label>
-
                 <CirclePicker
                   onChange={this.handleChangeColor}
                   value={this.state.mainToDo.color}
+                  colors={Array.from(colors.keys())}
+                  width="stretch"
                 />
               </Form.Group>
               <SaveButton type="submit">Save</SaveButton>

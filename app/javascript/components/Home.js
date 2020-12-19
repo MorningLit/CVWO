@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import Registration from "./auth/Registration";
 import Login from "./auth/Login";
 import styled from "styled-components";
@@ -20,47 +20,33 @@ const LoginDiv = styled.div`
   border-radius: 10px;
 `;
 
-export class Home extends Component {
-  constructor(props) {
-    super(props);
+export default function Home(props) {
+  const [register, setRegister] = useState(false);
 
-    this.handleSuccessfulAuth = this.handleSuccessfulAuth.bind(this);
-    this.handleRegister = this.handleRegister.bind(this);
-    this.state = {
-      register: false,
-    };
-  }
+  const handleRegister = () => {
+    setRegister((prev) => !prev);
+  };
 
-  handleRegister() {
-    this.setState({
-      register: !this.state.register,
-    });
-  }
+  const handleSuccessfulAuth = (data) => {
+    props.handleLogin(data);
+    props.history.push("/dashboard");
+  };
 
-  handleSuccessfulAuth(data) {
-    this.props.handleLogin(data);
-    this.props.history.push("/dashboard");
-  }
-
-  render() {
-    return (
-      <BackgroundDiv className="row">
-        <LoginDiv className="col col-md-4">
-          {this.state.register ? (
-            <Registration
-              handleSuccessfulAuth={this.handleSuccessfulAuth}
-              handleRegister={this.handleRegister}
-            />
-          ) : (
-            <Login
-              handleSuccessfulAuth={this.handleSuccessfulAuth}
-              handleRegister={this.handleRegister}
-            />
-          )}
-        </LoginDiv>
-      </BackgroundDiv>
-    );
-  }
+  return (
+    <BackgroundDiv className="row">
+      <LoginDiv className="col col-md-4">
+        {register ? (
+          <Registration
+            handleSuccessfulAuth={handleSuccessfulAuth}
+            handleRegister={handleRegister}
+          />
+        ) : (
+          <Login
+            handleSuccessfulAuth={handleSuccessfulAuth}
+            handleRegister={handleRegister}
+          />
+        )}
+      </LoginDiv>
+    </BackgroundDiv>
+  );
 }
-
-export default Home;
