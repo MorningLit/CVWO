@@ -7,6 +7,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import update from "immutability-helper";
 import { BsArrowLeft, BsTrash } from "react-icons/bs";
+import { CirclePicker } from "react-color";
 
 const BackgroundDiv = styled.div`
   display: flex;
@@ -38,6 +39,7 @@ const ToDoFocus = styled(Form)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: 4px;
 `;
 
 const SaveButton = styled(Button)`
@@ -67,6 +69,7 @@ export class ToDoPage extends Component {
     this.readUserData = this.readUserData.bind(this);
     this.createTodo = this.createTodo.bind(this);
     this.toggleCompleted = this.toggleCompleted.bind(this);
+    this.handleChangeColor = this.handleChangeColor.bind(this);
   }
   componentDidMount() {
     this.readUserData();
@@ -147,7 +150,6 @@ export class ToDoPage extends Component {
         withCredentials: true,
       })
       .then((response) => {
-        console.log(response);
         const todoIndex = this.state.currentTodos.findIndex((x) => x.id === id);
         const todos = update(this.state.currentTodos, {
           $splice: [[todoIndex, 1]],
@@ -185,6 +187,15 @@ export class ToDoPage extends Component {
       mainToDo: {
         ...prevState.mainToDo,
         [event.target.name]: event.target.value,
+      },
+    }));
+  }
+  handleChangeColor(color) {
+    this.setState((prevState) => ({
+      ...prevState,
+      mainToDo: {
+        ...prevState.mainToDo,
+        color: color.hex,
       },
     }));
   }
@@ -243,7 +254,7 @@ export class ToDoPage extends Component {
                 <Form.Label>Description</Form.Label>
                 <Form.Control
                   as="textarea"
-                  rows={3}
+                  rows={5}
                   name="description"
                   value={this.state.mainToDo.description}
                   onChange={this.handleChange}
@@ -251,10 +262,10 @@ export class ToDoPage extends Component {
               </Form.Group>
               <Form.Group controlId="ToDoColor">
                 <Form.Label>Color</Form.Label>
-                <Form.Control
-                  name="color"
+
+                <CirclePicker
+                  onChange={this.handleChangeColor}
                   value={this.state.mainToDo.color}
-                  onChange={this.handleChange}
                 />
               </Form.Group>
               <SaveButton type="submit">Save</SaveButton>
