@@ -25,23 +25,22 @@ const CreateToDoButton = styled(Button)`
 `;
 
 export default function toDoList(props) {
-  const list = props.todos.map((item) => {
-    item.mode = "EDIT";
-    console.log(item);
+  const list = props.todos.map((todo) => {
+    let item = { todo: todo, mode: "EDIT" };
     return (
       <ListGroup.Item
         action
-        variant={colors.get(item.color)}
-        key={item.id}
+        variant={colors.get(item.todo.color)}
+        key={item.todo.id}
         onClick={() => props.viewToDo(item)}
       >
         <Form.Check
           inline
           type="checkbox"
-          defaultChecked={item.completed}
+          defaultChecked={item.todo.completed}
           onClick={() => props.toggleCompleted(item)}
         />
-        {item.title}
+        {item.todo.title}
       </ListGroup.Item>
     );
   });
@@ -51,11 +50,14 @@ export default function toDoList(props) {
       <CreateToDoButton
         onClick={() =>
           props.viewToDo({
-            title: "",
-            description: "",
-            color: "",
-            completed: false,
-            id: "",
+            todo: {
+              title: "",
+              description: "",
+              color: "#fdfdfe",
+              completed: false,
+              id: "",
+            },
+
             mode: "CREATE",
           })
         }

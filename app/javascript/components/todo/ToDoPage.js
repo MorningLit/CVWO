@@ -109,7 +109,6 @@ export class ToDoPage extends Component {
           }
         )
         .then((response) => {
-          console.log(response);
           const todos = update(this.state.currentTodos, {
             $splice: [[0, 0, response.data]],
           });
@@ -150,7 +149,7 @@ export class ToDoPage extends Component {
       .delete(`http://localhost:3000/api/v1/todos/${id}`, {
         withCredentials: true,
       })
-      .then((response) => {
+      .then(() => {
         const todoIndex = this.state.currentTodos.findIndex((x) => x.id === id);
         const todos = update(this.state.currentTodos, {
           $splice: [[todoIndex, 1]],
@@ -162,13 +161,6 @@ export class ToDoPage extends Component {
       });
   };
 
-  viewToDo(data) {
-    this.setState({
-      mainToDo: data,
-      mode: data.mode,
-    });
-  }
-
   viewList() {
     this.setState({
       mainToDo: {
@@ -179,6 +171,13 @@ export class ToDoPage extends Component {
         id: "",
       },
       mode: "VIEW",
+    });
+  }
+
+  viewToDo(data) {
+    this.setState({
+      mainToDo: data.todo,
+      mode: data.mode,
     });
   }
 
@@ -202,7 +201,7 @@ export class ToDoPage extends Component {
   }
 
   toggleCompleted(data) {
-    const todo = data;
+    const todo = data.todo;
     todo.completed = !todo.completed;
     axios
       .put(`http://localhost:3000/api/v1/todos/${todo.id}`, {
@@ -256,7 +255,7 @@ export class ToDoPage extends Component {
                 <Form.Label>Description</Form.Label>
                 <Form.Control
                   as="textarea"
-                  rows={5}
+                  rows={4}
                   name="description"
                   value={this.state.mainToDo.description}
                   onChange={this.handleChange}
