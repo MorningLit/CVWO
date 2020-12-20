@@ -7,7 +7,7 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import ToDoPage from "./todo/ToDoPage";
 import Profile from "./Profile";
 import styled, { ThemeProvider } from "styled-components";
-import DefaultTheme from "./theme/DefaultTheme";
+import FolderColors from "./theme/FolderColors.js";
 
 const Background = styled.div`
   background-color: ${(props) => props.theme.primaryColor};
@@ -79,7 +79,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <ThemeProvider theme={DefaultTheme}>
+      <ThemeProvider theme={FolderColors}>
         <Background>
           <Switch>
             <Route
