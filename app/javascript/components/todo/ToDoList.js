@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import styled from "styled-components";
 import Form from "react-bootstrap/Form";
@@ -21,31 +21,43 @@ const List = styled(ListGroup)`
   overflow-x: hidden;
 `;
 
-export default function toDoList(props) {
-  const list = props.currentTodos.map((todo) => {
-    const item = { todo: todo, mode: "EDIT" };
-    return (
-      <ListGroup.Item
-        action
-        variant={colors.get(item.todo.color)}
-        key={item.todo.id}
-        onClick={() => props.viewToDo(item)}
-      >
-        <Form.Check
-          inline
-          type="checkbox"
-          defaultChecked={item.todo.completed}
-          onClick={() => props.toggleCompleted(item)}
-        />
-        {item.todo.title}
-      </ListGroup.Item>
-    );
-  });
+function ToDoList(props) {
+  const [query, setQuery] = useState("");
+
+  const handleQuery = (input) => {
+    const value = input.target.value;
+    setQuery(value);
+  };
+
+  const list = props.currentTodos
+    .filter(
+      (todo) =>
+        !query || todo.title.includes(query) || todo.description.includes(query)
+    )
+    .map((todo) => {
+      const item = { todo: todo, mode: "EDIT" };
+      return (
+        <ListGroup.Item
+          action
+          variant={colors.get(item.todo.color)}
+          key={item.todo.id}
+          onClick={() => props.viewToDo(item)}
+        >
+          <Form.Check
+            inline
+            type="checkbox"
+            defaultChecked={item.todo.completed}
+            onClick={() => props.toggleCompleted(item)}
+          />
+          {item.todo.title}
+        </ListGroup.Item>
+      );
+    });
 
   return (
     <Container>
       <SearchContainer>
-        <Search currentTodos={props.currentTodos} />
+        <Search handleQuery={handleQuery} query={query} />
         <StyledButton
           onClick={() =>
             props.viewToDo({
@@ -69,3 +81,5 @@ export default function toDoList(props) {
     </Container>
   );
 }
+
+export default React.memo(ToDoList);

@@ -5,7 +5,7 @@ import StyledNavBar from "../style/StyledNavBar";
 import axios from "axios";
 import update from "immutability-helper";
 import Spinner from "react-bootstrap/Spinner";
-import ToDoFrom from "./ToDoForm";
+import ToDoFocus from "./ToDoFocus";
 
 const BackgroundDiv = styled.div`
   display: flex;
@@ -225,7 +225,7 @@ export class ToDoPage extends PureComponent {
 
         {mode === "CREATE" || mode === "EDIT" ? (
           <ToDoViewerSection>
-            <ToDoFrom
+            <ToDoFocus
               mainToDo={mainToDo}
               mode={mode}
               handleChange={this.handleChange}
