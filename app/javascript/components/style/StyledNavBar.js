@@ -15,7 +15,7 @@ const NaviBar = styled(Nav)`
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 `;
 
-export default function NavBar() {
+export default function StyledNavBar() {
   return (
     <NaviBar className="flex-column">
       <Nav.Link as={Link} to="/dashboard">

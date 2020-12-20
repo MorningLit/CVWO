@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import NavBar from "./NavBar";
+import StyledNavBar from "./style/StyledNavBar";
 import styled from "styled-components";
 
 const BackgroundDiv = styled.div`
@@ -28,7 +28,7 @@ export class Profile extends Component {
   render() {
     return (
       <BackgroundDiv>
-        <NavBar />
+        <StyledNavBar />
         <button
           className="btn btn-primary"
           onClick={() => this.handleLogoutClick()}

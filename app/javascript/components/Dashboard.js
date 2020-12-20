@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import NavBar from "./NavBar";
+import StyledNavBar from "./style/StyledNavBar";
 import styled from "styled-components";
 
 const BackgroundDiv = styled.div`
@@ -16,7 +16,7 @@ export class Dashboard extends Component {
   render() {
     return (
       <BackgroundDiv>
-        <NavBar />
+        <StyledNavBar />
         <div>
           <h1>Dashboard</h1>
           <h1>Hello {this.props.user.name}!</h1>

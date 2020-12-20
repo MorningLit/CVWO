@@ -1,14 +1,11 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import ToDoList from "./ToDoList";
 import styled from "styled-components";
-import NavBar from "../NavBar";
+import StyledNavBar from "../style/StyledNavBar";
 import axios from "axios";
-import Form from "react-bootstrap/Form";
 import update from "immutability-helper";
-import { BsArrowLeft, BsTrash } from "react-icons/bs";
-import { CirclePicker } from "react-color";
-import { colors } from "./ColorMap";
-import StyledButton from "../style/StyledButton";
+import Spinner from "react-bootstrap/Spinner";
+import ToDoFrom from "./ToDoForm";
 
 const BackgroundDiv = styled.div`
   display: flex;
@@ -35,16 +32,7 @@ const ToDoViewerSection = styled.div`
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 `;
 
-const ToDoFocus = styled(Form)`
-  width: stretch;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 4px;
-  margin: 2px;
-`;
-
-export class ToDoPage extends Component {
+export class ToDoPage extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -56,16 +44,16 @@ export class ToDoPage extends Component {
         completed: false,
         id: "",
       },
-
+      loading: true,
       mode: "VIEW",
     };
     this.viewToDo = this.viewToDo.bind(this);
     this.viewList = this.viewList.bind(this);
     this.deleteTodo = this.deleteTodo.bind(this);
-    this.handleChange = this.handleChange.bind(this);
     this.readUserData = this.readUserData.bind(this);
     this.createTodo = this.createTodo.bind(this);
     this.toggleCompleted = this.toggleCompleted.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.handleChangeColor = this.handleChangeColor.bind(this);
   }
   componentDidMount() {
@@ -78,7 +66,7 @@ export class ToDoPage extends Component {
         let filtered = response.data.filter(
           (item) => item.user_id === this.props.user.id
         );
-        this.setState({ currentTodos: filtered });
+        this.setState({ loading: false, currentTodos: filtered });
       })
       .catch((error) => console.log(error));
   }
@@ -105,6 +93,7 @@ export class ToDoPage extends Component {
           }
         )
         .then((response) => {
+          console.log(response);
           const todos = update(this.state.currentTodos, {
             $splice: [[0, 0, response.data]],
           });
@@ -216,67 +205,36 @@ export class ToDoPage extends Component {
   }
 
   render() {
+    const { currentTodos, mainToDo, loading, mode } = this.state;
     return (
       <BackgroundDiv>
-        <NavBar />
+        <StyledNavBar />
 
         <ToDoListSection>
-          <ToDoList
-            user={this.props.user}
-            todos={this.state.currentTodos}
-            viewToDo={this.viewToDo}
-            toggleCompleted={this.toggleCompleted}
-          />
+          {loading ? (
+            <Spinner animation="border" />
+          ) : (
+            <ToDoList
+              user={this.props.user}
+              currentTodos={currentTodos}
+              viewToDo={this.viewToDo}
+              toggleCompleted={this.toggleCompleted}
+            />
+          )}
         </ToDoListSection>
 
-        {this.state.mode === "CREATE" || this.state.mode === "EDIT" ? (
+        {mode === "CREATE" || mode === "EDIT" ? (
           <ToDoViewerSection>
-            <BsArrowLeft
-              onClick={() => this.viewList()}
-              size="40px"
-              cursor="pointer"
+            <ToDoFrom
+              mainToDo={mainToDo}
+              mode={mode}
+              handleChange={this.handleChange}
+              handleChangeColor={this.handleChangeColor}
+              viewList={this.viewList}
+              deleteTodo={this.deleteTodo}
+              createTodo={this.createTodo}
             />
-            <ToDoFocus onSubmit={this.createTodo}>
-              <Form.Group controlId="ToDoTitle">
-                <Form.Label>Title</Form.Label>
-                <Form.Control
-                  name="title"
-                  required
-                  value={this.state.mainToDo.title}
-                  onChange={this.handleChange}
-                />
-              </Form.Group>
-
-              <Form.Group controlId="ToDoDescription">
-                <Form.Label>Description</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={4}
-                  name="description"
-                  value={this.state.mainToDo.description}
-                  onChange={this.handleChange}
-                />
-              </Form.Group>
-
-              <Form.Group controlId="ToDoColor">
-                <Form.Label>Color</Form.Label>
-                <CirclePicker
-                  onChange={this.handleChangeColor}
-                  value={this.state.mainToDo.color}
-                  colors={Array.from(colors.keys())}
-                  width="stretch"
-                />
-              </Form.Group>
-              <StyledButton type="submit">Save</StyledButton>
-            </ToDoFocus>
-
-            {this.state.mode === "EDIT" ? (
-              <BsTrash
-                onClick={() => this.deleteTodo(this.state.mainToDo.id)}
-                size="40px"
-                cursor="pointer"
-              ></BsTrash>
-            ) : null}
+            ;
           </ToDoViewerSection>
         ) : null}
       </BackgroundDiv>
