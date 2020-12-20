@@ -40,7 +40,7 @@ export class Login extends Component {
 
     axios
       .post(
-        "http://localhost:3000/sessions",
+        "/sessions",
         {
           user: {
             email: email,

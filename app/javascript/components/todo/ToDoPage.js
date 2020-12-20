@@ -61,7 +61,7 @@ export class ToDoPage extends PureComponent {
   }
   readUserData() {
     axios
-      .get("http://localhost:3000/api/v1/todos.json")
+      .get("/api/v1/todos.json")
       .then((response) => {
         let filtered = response.data.filter(
           (item) => item.user_id === this.props.user.id
@@ -76,7 +76,7 @@ export class ToDoPage extends PureComponent {
     if (this.state.mode === "CREATE") {
       axios
         .post(
-          "http://localhost:3000/api/v1/todos",
+          "/api/v1/todos",
           {
             user: {
               email: this.props.user.email,
@@ -93,7 +93,6 @@ export class ToDoPage extends PureComponent {
           }
         )
         .then((response) => {
-          console.log(response);
           const todos = update(this.state.currentTodos, {
             $splice: [[0, 0, response.data]],
           });
@@ -106,7 +105,7 @@ export class ToDoPage extends PureComponent {
       const todo = this.state.mainToDo;
 
       axios
-        .put(`http://localhost:3000/api/v1/todos/${this.state.mainToDo.id}`, {
+        .put(`/api/v1/todos/${this.state.mainToDo.id}`, {
           todo: {
             title: todo.title,
             description: todo.description,
@@ -131,7 +130,7 @@ export class ToDoPage extends PureComponent {
   deleteTodo = (id) => {
     // check login status
     axios
-      .delete(`http://localhost:3000/api/v1/todos/${id}`, {
+      .delete(`/api/v1/todos/${id}`, {
         withCredentials: true,
       })
       .then(() => {
@@ -189,7 +188,7 @@ export class ToDoPage extends PureComponent {
     const todo = data.todo;
     todo.completed = !todo.completed;
     axios
-      .put(`http://localhost:3000/api/v1/todos/${todo.id}`, {
+      .put(`/api/v1/todos/${todo.id}`, {
         todo: { completed: todo.completed },
       })
       .then((response) => {
@@ -234,7 +233,6 @@ export class ToDoPage extends PureComponent {
               deleteTodo={this.deleteTodo}
               createTodo={this.createTodo}
             />
-            ;
           </ToDoViewerSection>
         ) : null}
       </BackgroundDiv>

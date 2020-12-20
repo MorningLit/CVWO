@@ -16,7 +16,7 @@ export class Profile extends Component {
 
   handleLogoutClick() {
     axios
-      .delete("http://localhost:3000/logout", { withCredentials: true })
+      .delete("/logout", { withCredentials: true })
       .then((response) => {
         this.props.handleLogout();
       })
@@ -29,12 +29,17 @@ export class Profile extends Component {
     return (
       <BackgroundDiv>
         <StyledNavBar />
-        <button
-          className="btn btn-primary"
-          onClick={() => this.handleLogoutClick()}
-        >
-          Logout
-        </button>
+        <div>
+          <h1>Dashboard</h1>
+          <h1>Hello {this.props.user.name}!</h1>
+          <h1>Status: {this.props.loggedInStatus}</h1>
+          <button
+            className="btn btn-primary"
+            onClick={() => this.handleLogoutClick()}
+          >
+            Logout
+          </button>
+        </div>
       </BackgroundDiv>
     );
   }
