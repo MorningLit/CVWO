@@ -84,6 +84,4 @@ test:
 #
 production:
   <<: *default
-  database: folder-friend-production
-  username: <%= ENV['RDS_USERNAME'] %>
-  password: <%= ENV['RDS_PASSWORD'] %>
+  database: <%= ENV['DATABASE_URL'] %>
