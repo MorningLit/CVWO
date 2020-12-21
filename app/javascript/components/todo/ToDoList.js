@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import { colors } from "./ColorMap";
 import StyledButton from "../style/StyledButton";
 import Search from "./Search";
-import "./Scrollbar.css";
+import "../style/Scrollbar.css";
 
 const Container = styled.div`
   display: flex;

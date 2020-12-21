@@ -5,6 +5,8 @@ import { colors } from "./ColorMap";
 import StyledButton from "../style/StyledButton";
 import Form from "react-bootstrap/Form";
 import styled from "styled-components";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 
 const ToDoForm = styled(Form)`
   width: stretch;
@@ -17,14 +19,31 @@ const ToDoForm = styled(Form)`
 
 function ToDoFocus(props) {
   const { mainToDo } = props;
+  const renderBackTooltip = (props) => (
+    <Tooltip id="back-tooltip" {...props}>
+      Back
+    </Tooltip>
+  );
+  const renderDeleteTooltip = (props) => (
+    <Tooltip id="delete-tooltip" {...props}>
+      Delete
+    </Tooltip>
+  );
 
   return (
     <Fragment>
-      <BsArrowLeft
-        onClick={() => props.viewList()}
-        size="40px"
-        cursor="pointer"
-      />
+      <OverlayTrigger
+        placement="bottom"
+        delay={{ show: 250, hide: 400 }}
+        overlay={renderBackTooltip}
+      >
+        <BsArrowLeft
+          onClick={() => props.viewList()}
+          size="40px"
+          cursor="pointer"
+        />
+      </OverlayTrigger>
+
       <ToDoForm onSubmit={props.createTodo}>
         <Form.Group controlId="ToDoTitle">
           <Form.Label>Title</Form.Label>
@@ -60,11 +79,17 @@ function ToDoFocus(props) {
       </ToDoForm>
 
       {props.mode === "EDIT" ? (
-        <BsTrash
-          onClick={() => props.deleteTodo(mainToDo.id)}
-          size="40px"
-          cursor="pointer"
-        ></BsTrash>
+        <OverlayTrigger
+          placement="bottom"
+          delay={{ show: 250, hide: 400 }}
+          overlay={renderDeleteTooltip}
+        >
+          <BsTrash
+            onClick={() => props.deleteTodo(mainToDo.id)}
+            size="40px"
+            cursor="pointer"
+          ></BsTrash>
+        </OverlayTrigger>
       ) : null}
     </Fragment>
   );
