@@ -5,6 +5,7 @@ import Form from "react-bootstrap/Form";
 import { colors } from "./ColorMap";
 import StyledButton from "../style/StyledButton";
 import Search from "./Search";
+import "./Scrollbar.css";
 
 const Container = styled.div`
   display: flex;
@@ -76,8 +77,9 @@ function ToDoList(props) {
           New ToDo
         </StyledButton>
       </SearchContainer>
-
-      <List variant="flush">{list}</List>
+      <List variant="flush" data-simplebar>
+        {list}
+      </List>
     </Container>
   );
 }
