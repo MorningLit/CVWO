@@ -3,9 +3,11 @@ import ListGroup from "react-bootstrap/ListGroup";
 import styled from "styled-components";
 import Form from "react-bootstrap/Form";
 import { colors } from "./ColorMap";
-import StyledButton from "../style/StyledButton";
 import Search from "./Search";
 import "../style/Scrollbar.css";
+import { BsPlusSquare } from "react-icons/bs";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 
 const Container = styled.div`
   display: flex;
@@ -14,8 +16,17 @@ const Container = styled.div`
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 `;
-const SearchContainer = styled.div`
+const SearchAddContainer = styled.div`
   display: flex;
+`;
+
+const SearchBar = styled.div`
+  margin: 3px 3px 2px 3px;
+  width: stretch;
+`;
+
+const PlusButton = styled(BsPlusSquare)`
+  margin: 2px 3px 1px 0px;
 `;
 
 const ListContainer = styled.div`
@@ -60,28 +71,42 @@ function ToDoList(props) {
       );
     });
 
+  const renderCreateTooltip = (props) => (
+    <Tooltip id="back-tooltip" {...props}>
+      Create
+    </Tooltip>
+  );
+
   return (
     <Container>
-      <SearchContainer>
-        <Search handleQuery={handleQuery} query={query} />
-        <StyledButton
-          onClick={() =>
-            props.viewToDo({
-              todo: {
-                title: "",
-                description: "",
-                color: "#fdfdfe",
-                completed: false,
-                id: "",
-              },
-
-              mode: "CREATE",
-            })
-          }
+      <SearchAddContainer>
+        <SearchBar>
+          <Search handleQuery={handleQuery} query={query} />
+        </SearchBar>
+        <OverlayTrigger
+          placement="bottom"
+          delay={{ show: 250, hide: 400 }}
+          overlay={renderCreateTooltip}
         >
-          New ToDo
-        </StyledButton>
-      </SearchContainer>
+          <PlusButton
+            size="42px"
+            cursor="pointer"
+            onClick={() =>
+              props.viewToDo({
+                todo: {
+                  title: "",
+                  description: "",
+                  color: "#fdfdfe",
+                  completed: false,
+                  id: "",
+                },
+
+                mode: "CREATE",
+              })
+            }
+          ></PlusButton>
+        </OverlayTrigger>
+      </SearchAddContainer>
       <ListContainer data-simplebar>
         <List variant="flush">{list}</List>
       </ListContainer>
