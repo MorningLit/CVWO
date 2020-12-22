@@ -7,6 +7,7 @@ import Form from "react-bootstrap/Form";
 import styled from "styled-components";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import "../style/FormTextArea.css";
 
 const ToDoForm = styled(Form)`
   width: stretch;

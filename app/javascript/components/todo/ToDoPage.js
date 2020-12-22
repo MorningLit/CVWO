@@ -6,6 +6,8 @@ import axios from "axios";
 import update from "immutability-helper";
 import Spinner from "react-bootstrap/Spinner";
 import ToDoFocus from "./ToDoFocus";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const BackgroundDiv = styled.div`
   display: flex;
@@ -68,7 +70,9 @@ export class ToDoPage extends PureComponent {
         );
         this.setState({ loading: false, currentTodos: filtered });
       })
-      .catch((error) => console.log(error));
+      .catch((error) =>
+        toast.error(`Oops! Something went wrong! 😵\n${error}`)
+      );
   }
 
   createTodo(event) {
@@ -97,9 +101,10 @@ export class ToDoPage extends PureComponent {
             $splice: [[0, 0, response.data]],
           });
           this.setState({ currentTodos: todos });
+          toast.info("Task created! 💪");
         })
         .catch((error) => {
-          console.log("create todo error", error);
+          toast.error(`Oops! Something went wrong! 😵\n${error}`);
         });
     } else if (this.state.mode === "EDIT") {
       const todo = this.state.mainToDo;
@@ -120,8 +125,11 @@ export class ToDoPage extends PureComponent {
             [todoIndex]: { $set: todo },
           });
           this.setState({ currentTodos: todos });
+          toast.info("Task updated! 📝");
         })
-        .catch((error) => console.log(error));
+        .catch((error) =>
+          toast.error(`Oops! Something went wrong! 😵\n${error}`)
+        );
     }
     this.viewList(); // for mobile to go back to focus
     event.preventDefault();
@@ -139,9 +147,10 @@ export class ToDoPage extends PureComponent {
           $splice: [[todoIndex, 1]],
         });
         this.setState({ currentTodos: todos });
+        toast.info("Task deleted! 🚮");
       })
       .catch((error) => {
-        console.log("todo error", error);
+        toast.error(`Oops! Something went wrong! 😵\n${error}`);
       });
   };
 
@@ -199,12 +208,18 @@ export class ToDoPage extends PureComponent {
           [todoIndex]: { $set: todo },
         });
         this.setState({ currentTodos: todos });
+        if (todo.completed) {
+          toast.success("Task completed! 👍");
+        } else {
+          toast.warning("Task re-marked as undone. ☹️");
+        }
       })
       .catch((error) => console.log(error));
   }
 
   render() {
     const { currentTodos, mainToDo, loading, mode } = this.state;
+
     return (
       <BackgroundDiv>
         <StyledNavBar />
@@ -235,6 +250,7 @@ export class ToDoPage extends PureComponent {
             />
           </ToDoViewerSection>
         ) : null}
+        <ToastContainer position="bottom-center" />
       </BackgroundDiv>
     );
   }
