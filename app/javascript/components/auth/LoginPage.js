@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Registration from "./auth/Registration";
-import Login from "./auth/Login";
+import Registration from "./Registration";
+import Login from "./Login";
 import styled from "styled-components";
 
 const BackgroundDiv = styled.div`
@@ -22,7 +22,7 @@ const LoginDiv = styled.div`
   flex-direction: column;
 `;
 
-export default function Home(props) {
+export default function LoginPage(props) {
   const [register, setRegister] = useState(false);
 
   const handleRegister = () => {

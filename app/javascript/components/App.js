@@ -1,13 +1,13 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import axios from "axios";
-import Home from "./Home";
+import LoginPage from "./auth/LoginPage";
 import Dashboard from "./Dashboard";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import ToDoPage from "./todo/ToDoPage";
 import Profile from "./Profile";
 import styled, { ThemeProvider } from "styled-components";
-import FolderColors from "./theme/FolderColors.js";
+import LightTheme from "./theme/LightTheme.js";
 
 const Background = styled.div`
   background-color: ${(props) => props.theme.primaryColor};
@@ -79,7 +79,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <ThemeProvider theme={FolderColors}>
+      <ThemeProvider theme={LightTheme}>
         <Background>
           <Switch>
             <Route
@@ -87,7 +87,7 @@ class App extends React.Component {
               path={"/"}
               handleLogin={this.handleLogin}
               render={(props) => (
-                <Home
+                <LoginPage
                   {...props}
                   handleLogin={this.handleLogin}
                   loggedInStatus={this.state.loggedInStatus}

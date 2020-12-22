@@ -18,8 +18,13 @@ const SearchContainer = styled.div`
   display: flex;
 `;
 
+const ListContainer = styled.div`
+  display: flex;
+  overflow: auto;
+`;
+
 const List = styled(ListGroup)`
-  overflow-x: hidden;
+  width: stretch;
 `;
 
 function ToDoList(props) {
@@ -77,9 +82,9 @@ function ToDoList(props) {
           New ToDo
         </StyledButton>
       </SearchContainer>
-      <List variant="flush" data-simplebar>
-        {list}
-      </List>
+      <ListContainer data-simplebar>
+        <List variant="flush">{list}</List>
+      </ListContainer>
     </Container>
   );
 }
