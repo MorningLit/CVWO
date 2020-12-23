@@ -6,7 +6,6 @@ import "bootstrap";
 import "simplebar"; // or "import SimpleBar from 'simplebar';" if you want to use it manually.
 import "simplebar/dist/simplebar.css";
 import "react-toastify/dist/ReactToastify.css";
-
 require("@rails/ujs").start();
 require("turbolinks").start();
 require("@rails/activestorage").start();
