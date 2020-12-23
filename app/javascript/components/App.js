@@ -85,7 +85,6 @@ class App extends React.Component {
             <Route
               exact
               path={"/"}
-              handleLogin={this.handleLogin}
               render={(props) => (
                 <LoginPage
                   {...props}
@@ -99,14 +98,26 @@ class App extends React.Component {
               path={"/dashboard"}
               loggedInStatus={this.state.loggedInStatus}
               loading={this.state.loading}
-              component={(props) => <Dashboard {...props} {...this.state} />}
+              component={(props) => (
+                <Dashboard
+                  {...props}
+                  {...this.state}
+                  handleLogin={this.handleLogin}
+                />
+              )}
             />
             <ProtectedRoute
               exact
               path={"/todo"}
               loggedInStatus={this.state.loggedInStatus}
               loading={this.state.loading}
-              component={(props) => <ToDoPage {...props} {...this.state} />}
+              component={(props) => (
+                <ToDoPage
+                  {...props}
+                  {...this.state}
+                  handleLogin={this.handleLogin}
+                />
+              )}
             />
             <ProtectedRoute
               exact
@@ -118,6 +129,7 @@ class App extends React.Component {
                   {...props}
                   handleLogout={this.handleLogout}
                   {...this.state}
+                  handleLogin={this.handleLogin}
                 />
               )}
             />
