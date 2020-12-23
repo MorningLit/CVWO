@@ -7,7 +7,6 @@ import update from "immutability-helper";
 import Spinner from "react-bootstrap/Spinner";
 import ToDoFocus from "./ToDoFocus";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const BackgroundDiv = styled.div`
   display: flex;
@@ -35,6 +34,7 @@ const ToDoViewerSection = styled.div`
 `;
 
 export class ToDoPage extends PureComponent {
+  _isMounted = false;
   constructor(props) {
     super(props);
     this.state = {
@@ -52,28 +52,32 @@ export class ToDoPage extends PureComponent {
     this.viewToDo = this.viewToDo.bind(this);
     this.viewList = this.viewList.bind(this);
     this.deleteTodo = this.deleteTodo.bind(this);
-    this.readUserData = this.readUserData.bind(this);
     this.createTodo = this.createTodo.bind(this);
     this.toggleCompleted = this.toggleCompleted.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeColor = this.handleChangeColor.bind(this);
   }
-  componentDidMount() {
-    this.readUserData();
-  }
 
-  readUserData() {
+  componentDidMount() {
+    // check login status
+    this._isMounted = true;
     axios
       .get("/api/v1/todos.json")
       .then((response) => {
         let filtered = response.data.filter(
           (item) => item.user_id === this.props.user.id
         );
-        this.setState({ loading: false, currentTodos: filtered });
+        if (this._isMounted) {
+          this.setState({ loading: false, currentTodos: filtered });
+        }
       })
       .catch((error) =>
         toast.error(`Oops! Something went wrong! 😵\n${error}`)
       );
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   createTodo(event) {
@@ -149,6 +153,7 @@ export class ToDoPage extends PureComponent {
         });
         this.setState({ currentTodos: todos });
         toast.info("Task deleted! 🚮");
+        this.viewList(); // for mobile to go back to focus
       })
       .catch((error) => {
         toast.error(`Oops! Something went wrong! 😵\n${error}`);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Registration from "./Registration";
 import Login from "./Login";
 import styled from "styled-components";
@@ -22,7 +22,7 @@ const LoginDiv = styled.div`
   flex-direction: column;
 `;
 
-export default function LoginPage(props) {
+function LoginPage(props) {
   const [register, setRegister] = useState(false);
 
   const handleRegister = () => {
@@ -52,3 +52,5 @@ export default function LoginPage(props) {
     </BackgroundDiv>
   );
 }
+
+export default React.memo(LoginPage);
