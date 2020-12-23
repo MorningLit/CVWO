@@ -99,6 +99,7 @@ class App extends React.Component {
               loggedInStatus={this.state.loggedInStatus}
               loading={this.state.loading}
               handleLogin={this.handleLogin}
+              {...this.props}
               component={(props) => <Dashboard {...props} {...this.state} />}
             />
             <ProtectedRoute
@@ -107,6 +108,7 @@ class App extends React.Component {
               loggedInStatus={this.state.loggedInStatus}
               loading={this.state.loading}
               handleLogin={this.handleLogin}
+              {...this.props}
               component={(props) => <ToDoPage {...props} {...this.state} />}
             />
             <ProtectedRoute
@@ -115,6 +117,7 @@ class App extends React.Component {
               loggedInStatus={this.state.loggedInStatus}
               loading={this.state.loading}
               handleLogin={this.handleLogin}
+              {...this.props}
               component={(props) => (
                 <Profile
                   {...props}

@@ -61,6 +61,7 @@ export class ToDoPage extends PureComponent {
   componentDidMount() {
     this.readUserData();
   }
+
   readUserData() {
     axios
       .get("/api/v1/todos.json")
@@ -214,7 +215,9 @@ export class ToDoPage extends PureComponent {
           toast.warning("Task re-marked as undone. ☹️");
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) =>
+        toast.error(`Oops! Something went wrong! 😵\n${error}`)
+      );
   }
 
   render() {
