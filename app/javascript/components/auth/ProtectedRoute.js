@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import LoginPage from "./LoginPage";
 import Spinner from "react-bootstrap/Spinner";
 
 export default function ProtectedRoute({
@@ -18,9 +17,9 @@ export default function ProtectedRoute({
         } else if (loggedInStatus === "LOGGED_IN") {
           return <Component {...rest} />;
         } else if (loggedInStatus === "NOT_LOGGED_IN") {
-          return <LoginPage {...rest} loggedInStatus={loggedInStatus} />;
-        } else {
-          <Redirect to={{ pathname: "/", state: { from: props.location } }} />;
+          return (
+            <Redirect to={{ pathname: "/", state: { from: props.location } }} />
+          );
         }
       }}
     />

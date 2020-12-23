@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import axios from "axios";
 import LoginPage from "./auth/LoginPage";
 import Dashboard from "./Dashboard";
@@ -8,6 +8,7 @@ import ToDoPage from "./todo/ToDoPage";
 import Profile from "./Profile";
 import styled, { ThemeProvider } from "styled-components";
 import LightTheme from "./theme/LightTheme.js";
+import Spinner from "react-bootstrap/Spinner";
 
 const Background = styled.div`
   background-color: ${(props) => props.theme.primaryColor};
@@ -78,6 +79,8 @@ class App extends React.Component {
   }
 
   render() {
+    const { loading, loggedInStatus } = this.state;
+
     return (
       <ThemeProvider theme={LightTheme}>
         <Background>
@@ -85,19 +88,35 @@ class App extends React.Component {
             <Route
               exact
               path={"/"}
-              render={(props) => (
-                <LoginPage
-                  {...props}
-                  handleLogin={this.handleLogin}
-                  loggedInStatus={this.state.loggedInStatus}
-                />
-              )}
+              render={(props) => {
+                if (loading) {
+                  return <Spinner animation="border" />;
+                } else if (loggedInStatus === "NOT_LOGGED_IN") {
+                  return (
+                    <LoginPage
+                      {...props}
+                      handleLogin={this.handleLogin}
+                      loggedInStatus={loggedInStatus}
+                    />
+                  );
+                } else if (loggedInStatus === "LOGGED_IN") {
+                  return (
+                    <Redirect
+                      to={{
+                        pathname: "/dashboard",
+                        state: { from: props.location },
+                      }}
+                    />
+                  );
+                }
+              }}
             />
+            )
             <ProtectedRoute
               exact
               path={"/dashboard"}
-              loggedInStatus={this.state.loggedInStatus}
-              loading={this.state.loading}
+              loggedInStatus={loggedInStatus}
+              loading={loading}
               handleLogin={this.handleLogin}
               {...this.props}
               component={(props) => <Dashboard {...props} {...this.state} />}
@@ -105,8 +124,8 @@ class App extends React.Component {
             <ProtectedRoute
               exact
               path={"/todo"}
-              loggedInStatus={this.state.loggedInStatus}
-              loading={this.state.loading}
+              loggedInStatus={loggedInStatus}
+              loading={loading}
               handleLogin={this.handleLogin}
               {...this.props}
               component={(props) => <ToDoPage {...props} {...this.state} />}
@@ -114,8 +133,8 @@ class App extends React.Component {
             <ProtectedRoute
               exact
               path={"/profile"}
-              loggedInStatus={this.state.loggedInStatus}
-              loading={this.state.loading}
+              loggedInStatus={loggedInStatus}
+              loading={loading}
               handleLogin={this.handleLogin}
               {...this.props}
               component={(props) => (

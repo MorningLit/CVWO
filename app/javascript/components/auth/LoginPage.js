@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Registration from "./Registration";
 import Login from "./Login";
 import styled from "styled-components";
