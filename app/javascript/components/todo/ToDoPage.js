@@ -6,7 +6,7 @@ import axios from "axios";
 import update from "immutability-helper";
 import Spinner from "react-bootstrap/Spinner";
 import ToDoFocus from "./ToDoFocus";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 const BackgroundDiv = styled.div`
   display: flex;
@@ -258,7 +258,6 @@ export class ToDoPage extends PureComponent {
             />
           </ToDoViewerSection>
         ) : null}
-        <ToastContainer position="bottom-center" />
       </BackgroundDiv>
     );
   }

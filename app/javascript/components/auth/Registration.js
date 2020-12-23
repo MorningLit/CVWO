@@ -17,6 +17,7 @@ export class Registration extends Component {
       email: "",
       password: "",
       password_confirmation: "",
+      // registration error do?
       registration_errors: "",
     };
 
@@ -56,7 +57,7 @@ export class Registration extends Component {
         }
       })
       .catch((error) => {
-        console.log("registration error", error);
+        toast.error(`Oops! Something went wrong! 😵\n${error}`);
       });
     event.preventDefault();
   }

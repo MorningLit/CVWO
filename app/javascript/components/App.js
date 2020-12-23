@@ -9,6 +9,7 @@ import Profile from "./Profile";
 import styled, { ThemeProvider } from "styled-components";
 import LightTheme from "./theme/LightTheme.js";
 import Spinner from "react-bootstrap/Spinner";
+import { ToastContainer } from "react-toastify";
 
 const Background = styled.div`
   background-color: ${(props) => props.theme.primaryColor};
@@ -92,14 +93,6 @@ class App extends React.Component {
               render={(props) => {
                 if (loading) {
                   return <Spinner animation="border" />;
-                } else if (loggedInStatus === "NOT_LOGGED_IN") {
-                  return (
-                    <LoginPage
-                      {...props}
-                      handleLogin={this.handleLogin}
-                      loggedInStatus={loggedInStatus}
-                    />
-                  );
                 } else if (loggedInStatus === "LOGGED_IN") {
                   return (
                     <Redirect
@@ -107,6 +100,14 @@ class App extends React.Component {
                         pathname: "/dashboard",
                         state: { from: props.location },
                       }}
+                    />
+                  );
+                } else if (loggedInStatus === "NOT_LOGGED_IN") {
+                  return (
+                    <LoginPage
+                      {...props}
+                      handleLogin={this.handleLogin}
+                      loggedInStatus={loggedInStatus}
                     />
                   );
                 }
@@ -147,6 +148,7 @@ class App extends React.Component {
               )}
             />
           </Switch>
+          <ToastContainer position="bottom-center" />
         </Background>
       </ThemeProvider>
     );

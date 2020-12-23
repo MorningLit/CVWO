@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Form from "react-bootstrap/Form";
 import Image from "react-bootstrap/Image";
 import StyledButton from "../style/StyledButton";
+import Alert from "react-bootstrap/Alert";
 
 const Logo = styled(Image)`
   height: 160px;
@@ -54,19 +55,26 @@ export class Login extends Component {
       .then((response) => {
         if (response.data.logged_in) {
           this.props.handleSuccessfulAuth(response.data);
+        } else {
+          this.setState({
+            login_errors: "Invalid Email or Password.",
+          });
         }
       })
       .catch((error) => {
-        console.log("login error", error);
+        toast.error(`Oops! Something went wrong! 😵\n${error}`);
       });
     event.preventDefault();
   }
 
   render() {
+    const { login_errors, email, password } = this.state;
     return (
       <Fragment>
         <Logo src="folder.png" rounded />
         <Title>Login</Title>
+        {login_errors ? <Alert variant="danger">{login_errors}</Alert> : null}
+
         <Form onSubmit={this.handleSubmit} className="form-group">
           <Form.Group controlId="loginEmail">
             <Form.Label>Email address</Form.Label>
@@ -74,7 +82,7 @@ export class Login extends Component {
               type="email"
               placeholder="Enter email"
               name="email"
-              value={this.state.email}
+              value={email}
               onChange={this.handleChange}
               required
             />
@@ -85,7 +93,7 @@ export class Login extends Component {
               type="password"
               placeholder="Password"
               name="password"
-              value={this.state.password}
+              value={password}
               onChange={this.handleChange}
               required
             />
