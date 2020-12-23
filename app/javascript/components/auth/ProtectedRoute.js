@@ -16,7 +16,7 @@ export default function ProtectedRoute({
         if (loading) {
           return <Spinner animation="border" />;
         } else if (loggedInStatus === "LOGGED_IN") {
-          return <Component />;
+          return <Component {...rest} />;
         } else if (loggedInStatus === "NOT_LOGGED_IN") {
           return <LoginPage {...rest} loggedInStatus={loggedInStatus} />;
         } else {

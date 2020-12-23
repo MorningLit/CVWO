@@ -98,38 +98,28 @@ class App extends React.Component {
               path={"/dashboard"}
               loggedInStatus={this.state.loggedInStatus}
               loading={this.state.loading}
-              component={(props) => (
-                <Dashboard
-                  {...props}
-                  {...this.state}
-                  handleLogin={this.handleLogin}
-                />
-              )}
+              handleLogin={this.handleLogin}
+              component={(props) => <Dashboard {...props} {...this.state} />}
             />
             <ProtectedRoute
               exact
               path={"/todo"}
               loggedInStatus={this.state.loggedInStatus}
               loading={this.state.loading}
-              component={(props) => (
-                <ToDoPage
-                  {...props}
-                  {...this.state}
-                  handleLogin={this.handleLogin}
-                />
-              )}
+              handleLogin={this.handleLogin}
+              component={(props) => <ToDoPage {...props} {...this.state} />}
             />
             <ProtectedRoute
               exact
               path={"/profile"}
               loggedInStatus={this.state.loggedInStatus}
               loading={this.state.loading}
+              handleLogin={this.handleLogin}
               component={(props) => (
                 <Profile
                   {...props}
                   handleLogout={this.handleLogout}
                   {...this.state}
-                  handleLogin={this.handleLogin}
                 />
               )}
             />
