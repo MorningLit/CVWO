@@ -96,7 +96,7 @@ function ToDoList(props) {
                 todo: {
                   title: "",
                   description: "",
-                  color: "#fdfdfe",
+                  color: "#cccccc",
                   completed: false,
                   id: "",
                 },

@@ -30,7 +30,7 @@ export class Profile extends Component {
       <BackgroundDiv>
         <StyledNavBar />
         <div>
-          <h1>Dashboard</h1>
+          <h1>Profile</h1>
           <h1>Hello {this.props.user.name}!</h1>
           <h1>Status: {this.props.loggedInStatus}</h1>
           <button

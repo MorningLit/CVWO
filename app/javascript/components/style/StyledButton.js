@@ -7,4 +7,7 @@ export default styled.button`
   width: stretch;
   padding: 4px;
   border-radius: 2px;
+  &:hover {
+    background-color: hsl(48, 96%, 67%);
+  }
 `;

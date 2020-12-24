@@ -42,9 +42,11 @@ export class ToDoPage extends PureComponent {
       mainToDo: {
         title: "",
         description: "",
-        color: "#fdfdfe",
+        color: "#cccccc",
         completed: false,
         id: "",
+        start: "",
+        end: "",
       },
       loading: true,
       mode: "VIEW",
@@ -56,6 +58,8 @@ export class ToDoPage extends PureComponent {
     this.toggleCompleted = this.toggleCompleted.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeColor = this.handleChangeColor.bind(this);
+    this.handleChangeStart = this.handleChangeStart.bind(this);
+    this.handleChangeEnd = this.handleChangeEnd.bind(this);
   }
 
   componentDidMount() {
@@ -165,7 +169,7 @@ export class ToDoPage extends PureComponent {
       mainToDo: {
         title: "",
         description: "",
-        color: "#fdfdfe",
+        color: "#cccccc",
         completed: false,
         id: "",
       },
@@ -195,6 +199,24 @@ export class ToDoPage extends PureComponent {
       mainToDo: {
         ...prevState.mainToDo,
         color: color.hex,
+      },
+    }));
+  }
+  handleChangeStart(start) {
+    this.setState((prevState) => ({
+      ...prevState,
+      mainToDo: {
+        ...prevState.mainToDo,
+        start: start,
+      },
+    }));
+  }
+  handleChangeEnd(end) {
+    this.setState((prevState) => ({
+      ...prevState,
+      mainToDo: {
+        ...prevState.mainToDo,
+        end: end,
       },
     }));
   }
@@ -255,6 +277,8 @@ export class ToDoPage extends PureComponent {
               viewList={this.viewList}
               deleteTodo={this.deleteTodo}
               createTodo={this.createTodo}
+              handleChangeStart={this.handleChangeStart}
+              handleChangeEnd={this.handleChangeEnd}
             />
           </ToDoViewerSection>
         ) : null}

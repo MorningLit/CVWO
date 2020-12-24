@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { BsArrowLeft, BsTrash } from "react-icons/bs";
 import { CirclePicker } from "react-color";
 import { colors } from "./ColorMap";
@@ -7,7 +7,9 @@ import Form from "react-bootstrap/Form";
 import styled from "styled-components";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-import "../style/FormTextArea.css";
+import "../style/ToDoForm.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const ToDoForm = styled(Form)`
   width: stretch;
@@ -67,6 +69,33 @@ function ToDoFocus(props) {
           />
         </Form.Group>
 
+        <Form.Group controlId="ToDoStart">
+          <Form.Label>Start</Form.Label>
+          <DatePicker
+            selected={mainToDo.start}
+            onChange={props.handleChangeStart}
+            showTimeSelect
+            dateFormat="eeee, d MMMM yyyy, h:mm aa"
+            selectsStart
+            startDate={mainToDo.start}
+            endDate={mainToDo.end}
+          />
+        </Form.Group>
+
+        <Form.Group controlId="ToDoEnd">
+          <Form.Label>End</Form.Label>
+          <DatePicker
+            selected={mainToDo.end}
+            onChange={props.handleChangeEnd}
+            showTimeSelect
+            dateFormat="eeee, d MMMM yyyy, h:mm aa"
+            selectsEnd
+            startDate={mainToDo.start}
+            endDate={mainToDo.end}
+            minDate={mainToDo.start}
+          />
+        </Form.Group>
+
         <Form.Group controlId="ToDoColor">
           <Form.Label>Color</Form.Label>
           <CirclePicker
@@ -76,6 +105,7 @@ function ToDoFocus(props) {
             width="stretch"
           />
         </Form.Group>
+
         <StyledButton type="submit">Save</StyledButton>
       </ToDoForm>
 
