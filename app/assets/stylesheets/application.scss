@@ -1,17 +1,4 @@
 @import "bootstrap/scss/bootstrap";
 @import "react-toastify/dist/ReactToastify.min.css";
 @import "simplebar/dist/simplebar.css";
-@import "react-datepicker/dist/react-datepicker-cssmodules.css";
 @import "react-datepicker/dist/react-datepicker.css";
-.simplebar-scrollbar::before {
-  background-color: #888888;
-}
-textarea {
-  resize: none;
-}
-.react-datepicker-wrapper,
-.react-datepicker__input-container,
-.react-datepicker__input-container input {
-  display: block;
-  width: 100%;
-}
