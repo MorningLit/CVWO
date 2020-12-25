@@ -7,6 +7,7 @@ import update from "immutability-helper";
 import Spinner from "react-bootstrap/Spinner";
 import ToDoFocus from "./ToDoFocus";
 import { toast } from "react-toastify";
+import { parseISO } from "date-fns";
 
 const BackgroundDiv = styled.div`
   display: flex;
@@ -68,9 +69,13 @@ export class ToDoPage extends PureComponent {
     axios
       .get("/api/v1/todos.json")
       .then((response) => {
-        let filtered = response.data.filter(
-          (item) => item.user_id === this.props.user.id
-        );
+        let filtered = response.data
+          .filter((item) => item.user_id === this.props.user.id)
+          .map((item) => {
+            item.start = parseISO(item.start);
+            item.end = parseISO(item.end);
+            return item;
+          });
         if (this._isMounted) {
           this.setState({ loading: false, currentTodos: filtered });
         }
@@ -86,7 +91,8 @@ export class ToDoPage extends PureComponent {
 
   createTodo(event) {
     // check login status
-    if (this.state.mode === "CREATE") {
+    const { mainToDo, mode, currentTodos } = this.state;
+    if (mode === "CREATE") {
       axios
         .post(
           "/api/v1/todos",
@@ -95,10 +101,12 @@ export class ToDoPage extends PureComponent {
               email: this.props.user.email,
             },
             todo: {
-              title: this.state.mainToDo.title,
-              description: this.state.mainToDo.description,
-              color: this.state.mainToDo.color,
+              title: mainToDo.title,
+              description: mainToDo.description,
+              color: mainToDo.color,
               completed: false,
+              start: mainToDo.start,
+              end: mainToDo.end,
             },
           },
           {
@@ -106,7 +114,7 @@ export class ToDoPage extends PureComponent {
           }
         )
         .then((response) => {
-          const todos = update(this.state.currentTodos, {
+          const todos = update(currentTodos, {
             $splice: [[0, 0, response.data]],
           });
           this.setState({ currentTodos: todos });
@@ -115,23 +123,23 @@ export class ToDoPage extends PureComponent {
         .catch((error) => {
           toast.error(`Oops! Something went wrong! 😵\n${error}`);
         });
-    } else if (this.state.mode === "EDIT") {
-      const todo = this.state.mainToDo;
-
+    } else if (mode === "EDIT") {
       axios
-        .put(`/api/v1/todos/${this.state.mainToDo.id}`, {
+        .put(`/api/v1/todos/${mainToDo.id}`, {
           todo: {
-            title: todo.title,
-            description: todo.description,
-            color: todo.color,
+            title: mainToDo.title,
+            description: mainToDo.description,
+            color: mainToDo.color,
+            start: mainToDo.start,
+            end: mainToDo.end,
           },
         })
         .then((response) => {
-          const todoIndex = this.state.currentTodos.findIndex(
+          const todoIndex = currentTodos.findIndex(
             (x) => x.id === response.data.id
           );
-          const todos = update(this.state.currentTodos, {
-            [todoIndex]: { $set: todo },
+          const todos = update(currentTodos, {
+            [todoIndex]: { $set: mainToDo },
           });
           this.setState({ currentTodos: todos });
           toast.info("Task updated! 📝");
@@ -172,6 +180,8 @@ export class ToDoPage extends PureComponent {
         color: "#cccccc",
         completed: false,
         id: "",
+        start: "",
+        end: "",
       },
       mode: "VIEW",
     });
