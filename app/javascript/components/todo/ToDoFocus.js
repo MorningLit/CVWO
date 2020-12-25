@@ -22,6 +22,7 @@ const ToDoForm = styled(Form)`
 
 function ToDoFocus(props) {
   const { mainToDo } = props;
+
   const renderBackTooltip = (props) => (
     <Tooltip id="back-tooltip" {...props}>
       Back
@@ -79,6 +80,7 @@ function ToDoFocus(props) {
             selectsStart
             startDate={mainToDo.start}
             endDate={mainToDo.end}
+            required
           />
         </Form.Group>
 
@@ -93,6 +95,7 @@ function ToDoFocus(props) {
             startDate={mainToDo.start}
             endDate={mainToDo.end}
             minDate={mainToDo.start}
+            required
           />
         </Form.Group>
 

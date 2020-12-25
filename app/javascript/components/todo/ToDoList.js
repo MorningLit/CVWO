@@ -99,8 +99,8 @@ function ToDoList(props) {
                   color: "#cccccc",
                   completed: false,
                   id: "",
-                  start: "",
-                  end: "",
+                  start: null,
+                  end: null,
                 },
 
                 mode: "CREATE",
