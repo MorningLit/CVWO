@@ -6,7 +6,7 @@ import "bootstrap";
 import "simplebar";
 import "simplebar/dist/simplebar.css";
 import "react-toastify/dist/ReactToastify.css";
-import "react-datepicker/dist/react-datepicker-cssmodules.css";
+import "react-datepicker/dist/react-datepicker.css";
 require("@rails/ujs").start();
 require("turbolinks").start();
 require("@rails/activestorage").start();
