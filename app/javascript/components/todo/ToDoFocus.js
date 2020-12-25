@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import { BsArrowLeft, BsTrash } from "react-icons/bs";
 import { CirclePicker } from "react-color";
 import { colors } from "./ColorMap";

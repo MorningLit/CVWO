@@ -53,7 +53,6 @@ function ToDoList(props) {
     )
     .map((todo) => {
       const item = { todo: todo, mode: "EDIT" };
-      console.log(item);
       return (
         <ListGroup.Item
           action
