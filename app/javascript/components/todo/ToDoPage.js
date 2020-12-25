@@ -217,7 +217,7 @@ export class ToDoPage extends PureComponent {
       ...prevState,
       mainToDo: {
         ...prevState.mainToDo,
-        start: start,
+        start: new Date(start),
       },
     }));
   }
@@ -226,7 +226,7 @@ export class ToDoPage extends PureComponent {
       ...prevState,
       mainToDo: {
         ...prevState.mainToDo,
-        end: end,
+        end: new Date(end),
       },
     }));
   }
