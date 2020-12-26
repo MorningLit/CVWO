@@ -46,8 +46,8 @@ export class ToDoPage extends PureComponent {
         color: "#cccccc",
         completed: false,
         id: "",
-        start: null,
-        end: null,
+        start: new Date(),
+        end: new Date(),
       },
       loading: true,
       mode: "VIEW",
@@ -114,6 +114,8 @@ export class ToDoPage extends PureComponent {
           }
         )
         .then((response) => {
+          response.data.start = parseISO(response.data.start);
+          response.data.end = parseISO(response.data.end);
           const todos = update(currentTodos, {
             $splice: [[0, 0, response.data]],
           });
@@ -180,8 +182,8 @@ export class ToDoPage extends PureComponent {
         color: "#cccccc",
         completed: false,
         id: "",
-        start: null,
-        end: null,
+        start: new Date(),
+        end: new Date(),
       },
       mode: "VIEW",
     });
@@ -217,7 +219,7 @@ export class ToDoPage extends PureComponent {
       ...prevState,
       mainToDo: {
         ...prevState.mainToDo,
-        start: new Date(start),
+        start: start,
       },
     }));
   }
@@ -226,7 +228,7 @@ export class ToDoPage extends PureComponent {
       ...prevState,
       mainToDo: {
         ...prevState.mainToDo,
-        end: new Date(end),
+        end: end,
       },
     }));
   }

@@ -73,10 +73,10 @@ function ToDoFocus(props) {
         <Form.Group controlId="ToDoStart">
           <Form.Label>Start</Form.Label>
           <DatePicker
-            selected={mainToDo.start}
+            selected={new Date(mainToDo.start)}
             onChange={props.handleChangeStart}
+            dateFormat="Pp"
             showTimeSelect
-            dateFormat="eeee, d MMMM yyyy, h:mm aa"
             selectsStart
             startDate={mainToDo.start}
             endDate={mainToDo.end}
@@ -87,10 +87,10 @@ function ToDoFocus(props) {
         <Form.Group controlId="ToDoEnd">
           <Form.Label>End</Form.Label>
           <DatePicker
-            selected={mainToDo.end}
+            selected={new Date(mainToDo.end)}
             onChange={props.handleChangeEnd}
+            dateFormat="Pp"
             showTimeSelect
-            dateFormat="eeee, d MMMM yyyy, h:mm aa"
             selectsEnd
             startDate={mainToDo.start}
             endDate={mainToDo.end}
