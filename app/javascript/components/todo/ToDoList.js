@@ -8,6 +8,7 @@ import "../style/Scrollbar.css";
 import { BsPlusSquare } from "react-icons/bs";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import EmptyToDo from "./EmptyToDo";
 
 const Container = styled.div`
   display: flex;
@@ -93,16 +94,7 @@ function ToDoList(props) {
             cursor="pointer"
             onClick={() =>
               props.viewToDo({
-                todo: {
-                  title: "",
-                  description: "",
-                  color: "#cccccc",
-                  completed: false,
-                  id: "",
-                  start: new Date(),
-                  end: new Date(),
-                },
-
+                todo: EmptyToDo(),
                 mode: "CREATE",
               })
             }

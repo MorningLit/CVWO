@@ -8,6 +8,7 @@ import Spinner from "react-bootstrap/Spinner";
 import ToDoFocus from "./ToDoFocus";
 import { toast } from "react-toastify";
 import { parseISO } from "date-fns";
+import EmptyToDo from "./EmptyToDo";
 
 const BackgroundDiv = styled.div`
   display: flex;
@@ -40,15 +41,7 @@ export class ToDoPage extends PureComponent {
     super(props);
     this.state = {
       currentTodos: [],
-      mainToDo: {
-        title: "",
-        description: "",
-        color: "#cccccc",
-        completed: false,
-        id: "",
-        start: new Date(),
-        end: new Date(),
-      },
+      mainToDo: EmptyToDo(),
       loading: true,
       mode: "VIEW",
     };
@@ -176,15 +169,7 @@ export class ToDoPage extends PureComponent {
 
   viewList() {
     this.setState({
-      mainToDo: {
-        title: "",
-        description: "",
-        color: "#cccccc",
-        completed: false,
-        id: "",
-        start: new Date(),
-        end: new Date(),
-      },
+      mainToDo: EmptyToDo(),
       mode: "VIEW",
     });
   }
