@@ -2,7 +2,6 @@ import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import axios from "axios";
 import LoginPage from "./auth/LoginPage";
-import Dashboard from "./Dashboard";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import ToDoPage from "./todo/ToDoPage";
 import Profile from "./Profile";
@@ -97,7 +96,7 @@ class App extends React.Component {
                   return (
                     <Redirect
                       to={{
-                        pathname: "/dashboard",
+                        pathname: "/profile",
                         state: { from: props.location },
                       }}
                     />
@@ -114,15 +113,6 @@ class App extends React.Component {
               }}
             />
             )
-            <ProtectedRoute
-              exact
-              path={"/dashboard"}
-              loggedInStatus={loggedInStatus}
-              loading={loading}
-              handleLogin={this.handleLogin}
-              {...this.props}
-              component={(props) => <Dashboard {...props} {...this.state} />}
-            />
             <ProtectedRoute
               exact
               path={"/todo"}

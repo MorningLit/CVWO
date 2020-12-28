@@ -18,10 +18,6 @@ const NaviBar = styled(Nav)`
 function StyledNavBar() {
   return (
     <NaviBar className="flex-column">
-      <Nav.Link as={Link} to="/dashboard">
-        <BsFillDisplayFill size="40px" color="#fbd129" />
-      </Nav.Link>
-
       <Nav.Link as={Link} to="/todo">
         <BsFolderFill size="40px" color="#fbd129" />
       </Nav.Link>

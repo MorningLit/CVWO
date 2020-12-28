@@ -9,6 +9,7 @@ import ToDoFocus from "./ToDoFocus";
 import { toast } from "react-toastify";
 import { parseISO } from "date-fns";
 import EmptyToDo from "./EmptyToDo";
+import { viewList, viewToDo } from "./ToDoFunction";
 
 const BackgroundDiv = styled.div`
   display: flex;
@@ -45,8 +46,6 @@ export class ToDoPage extends PureComponent {
       loading: true,
       mode: "VIEW",
     };
-    this.viewToDo = this.viewToDo.bind(this);
-    this.viewList = this.viewList.bind(this);
     this.deleteTodo = this.deleteTodo.bind(this);
     this.createTodo = this.createTodo.bind(this);
     this.toggleCompleted = this.toggleCompleted.bind(this);
@@ -143,7 +142,7 @@ export class ToDoPage extends PureComponent {
           toast.error(`Oops! Something went wrong! 😵\n${error}`)
         );
     }
-    this.viewList(); // for mobile to go back to focus
+    this.setState(viewList()); // for mobile to go back to focus
     event.preventDefault();
   }
 
@@ -160,26 +159,12 @@ export class ToDoPage extends PureComponent {
         });
         this.setState({ currentTodos: todos });
         toast.info("Task deleted! 🚮");
-        this.viewList(); // for mobile to go back to focus
+        this.setState(viewList()); // for mobile to go back to focus
       })
       .catch((error) => {
         toast.error(`Oops! Something went wrong! 😵\n${error}`);
       });
   };
-
-  viewList() {
-    this.setState({
-      mainToDo: EmptyToDo(),
-      mode: "VIEW",
-    });
-  }
-
-  viewToDo(data) {
-    this.setState({
-      mainToDo: data.todo,
-      mode: data.mode,
-    });
-  }
 
   handleChange(event) {
     this.setState((prevState) => ({
@@ -258,7 +243,7 @@ export class ToDoPage extends PureComponent {
             <ToDoList
               user={this.props.user}
               currentTodos={currentTodos}
-              viewToDo={this.viewToDo}
+              viewToDo={(data) => this.setState(viewToDo(data))}
               toggleCompleted={this.toggleCompleted}
             />
           )}
@@ -271,7 +256,7 @@ export class ToDoPage extends PureComponent {
               mode={mode}
               handleChange={this.handleChange}
               handleChangeColor={this.handleChangeColor}
-              viewList={this.viewList}
+              viewList={() => this.setState(viewList)}
               deleteTodo={this.deleteTodo}
               createTodo={this.createTodo}
               handleChangeStart={this.handleChangeStart}
