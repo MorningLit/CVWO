@@ -9,7 +9,7 @@ import ToDoFocus from "./ToDoFocus";
 import { toast } from "react-toastify";
 import { parseISO } from "date-fns";
 import EmptyToDo from "./EmptyToDo";
-import { viewList, viewToDo } from "./ToDoFunction";
+import { viewList, viewToDo, checkLoginStatus } from "./ToDoFunction";
 
 const BackgroundDiv = styled.div`
   display: flex;
@@ -56,25 +56,26 @@ export class ToDoPage extends PureComponent {
   }
 
   componentDidMount() {
-    // check login status
     this._isMounted = true;
-    axios
-      .get("/api/v1/todos.json")
-      .then((response) => {
-        let filtered = response.data
-          .filter((item) => item.user_id === this.props.user.id)
-          .map((item) => {
-            item.start = parseISO(item.start);
-            item.end = parseISO(item.end);
-            return item;
-          });
-        if (this._isMounted) {
-          this.setState({ loading: false, currentTodos: filtered });
-        }
-      })
-      .catch((error) =>
-        toast.error(`Oops! Something went wrong! 😵\n${error}`)
-      );
+    if (checkLoginStatus(this.props.loggedInStatus)) {
+      axios
+        .get("/api/v1/todos.json")
+        .then((response) => {
+          let filtered = response.data
+            .filter((item) => item.user_id === this.props.user.id)
+            .map((item) => {
+              item.start = parseISO(item.start);
+              item.end = parseISO(item.end);
+              return item;
+            });
+          if (this._isMounted) {
+            this.setState({ loading: false, currentTodos: filtered });
+          }
+        })
+        .catch((error) =>
+          toast.error(`Oops! Something went wrong! 😵\n${error}`)
+        );
+    }
   }
 
   componentWillUnmount() {
@@ -82,88 +83,92 @@ export class ToDoPage extends PureComponent {
   }
 
   createTodo(event) {
-    // check login status
     const { mainToDo, mode, currentTodos } = this.state;
-    if (mode === "CREATE") {
-      axios
-        .post(
-          "/api/v1/todos",
-          {
-            user: {
-              email: this.props.user.email,
+    if (checkLoginStatus(this.props.loggedInStatus)) {
+      if (mode === "CREATE") {
+        axios
+          .post(
+            "/api/v1/todos",
+            {
+              user: {
+                email: this.props.user.email,
+              },
+              todo: {
+                title: mainToDo.title,
+                description: mainToDo.description,
+                color: mainToDo.color,
+                completed: false,
+                start: mainToDo.start,
+                end: mainToDo.end,
+              },
             },
+            {
+              withCredentials: true,
+            }
+          )
+          .then((response) => {
+            response.data.start = parseISO(response.data.start);
+            response.data.end = parseISO(response.data.end);
+            const todos = update(currentTodos, {
+              $splice: [[0, 0, response.data]],
+            });
+            this.setState({ currentTodos: todos });
+            toast.info("Task created! 💪");
+          })
+          .catch((error) => {
+            toast.error(`Oops! Something went wrong! 😵\n${error}`);
+          });
+      } else if (mode === "EDIT") {
+        axios
+          .put(`/api/v1/todos/${mainToDo.id}`, {
             todo: {
               title: mainToDo.title,
               description: mainToDo.description,
               color: mainToDo.color,
-              completed: false,
               start: mainToDo.start,
               end: mainToDo.end,
             },
-          },
-          {
-            withCredentials: true,
-          }
-        )
-        .then((response) => {
-          response.data.start = parseISO(response.data.start);
-          response.data.end = parseISO(response.data.end);
-          const todos = update(currentTodos, {
-            $splice: [[0, 0, response.data]],
-          });
-          this.setState({ currentTodos: todos });
-          toast.info("Task created! 💪");
-        })
-        .catch((error) => {
-          toast.error(`Oops! Something went wrong! 😵\n${error}`);
-        });
-    } else if (mode === "EDIT") {
-      axios
-        .put(`/api/v1/todos/${mainToDo.id}`, {
-          todo: {
-            title: mainToDo.title,
-            description: mainToDo.description,
-            color: mainToDo.color,
-            start: mainToDo.start,
-            end: mainToDo.end,
-          },
-        })
-        .then((response) => {
-          const todoIndex = currentTodos.findIndex(
-            (x) => x.id === response.data.id
+          })
+          .then((response) => {
+            const todoIndex = currentTodos.findIndex(
+              (x) => x.id === response.data.id
+            );
+            const todos = update(currentTodos, {
+              [todoIndex]: { $set: mainToDo },
+            });
+            this.setState({ currentTodos: todos });
+            toast.info("Task updated! 📝");
+          })
+          .catch((error) =>
+            toast.error(`Oops! Something went wrong! 😵\n${error}`)
           );
-          const todos = update(currentTodos, {
-            [todoIndex]: { $set: mainToDo },
-          });
-          this.setState({ currentTodos: todos });
-          toast.info("Task updated! 📝");
-        })
-        .catch((error) =>
-          toast.error(`Oops! Something went wrong! 😵\n${error}`)
-        );
+      }
+      this.setState(viewList()); // for mobile to go back to focus
     }
-    this.setState(viewList()); // for mobile to go back to focus
     event.preventDefault();
   }
 
   deleteTodo = (id) => {
-    // check login status
-    axios
-      .delete(`/api/v1/todos/${id}`, {
-        withCredentials: true,
-      })
-      .then(() => {
-        const todoIndex = this.state.currentTodos.findIndex((x) => x.id === id);
-        const todos = update(this.state.currentTodos, {
-          $splice: [[todoIndex, 1]],
+    if (checkLoginStatus(this.props.loggedInStatus)) {
+      axios
+        .delete(`/api/v1/todos/${id}`, {
+          withCredentials: true,
+        })
+        .then(() => {
+          const todoIndex = this.state.currentTodos.findIndex(
+            (x) => x.id === id
+          );
+          const todos = update(this.state.currentTodos, {
+            $splice: [[todoIndex, 1]],
+          });
+          this.setState({ currentTodos: todos });
+          toast.info("Task deleted! 🚮");
+          this.setState(viewList()); // for mobile to go back to focus
+        })
+        .catch((error) => {
+          toast.error(`Oops! Something went wrong! 😵\n${error}`);
         });
-        this.setState({ currentTodos: todos });
-        toast.info("Task deleted! 🚮");
-        this.setState(viewList()); // for mobile to go back to focus
-      })
-      .catch((error) => {
-        toast.error(`Oops! Something went wrong! 😵\n${error}`);
-      });
+    }
   };
 
   handleChange(event) {
@@ -206,27 +211,29 @@ export class ToDoPage extends PureComponent {
   toggleCompleted(data) {
     const todo = data.todo;
     todo.completed = !todo.completed;
-    axios
-      .put(`/api/v1/todos/${todo.id}`, {
-        todo: { completed: todo.completed },
-      })
-      .then((response) => {
-        const todoIndex = this.state.currentTodos.findIndex(
-          (x) => x.id === response.data.id
+    if (checkLoginStatus(this.props.loggedInStatus)) {
+      axios
+        .put(`/api/v1/todos/${todo.id}`, {
+          todo: { completed: todo.completed },
+        })
+        .then((response) => {
+          const todoIndex = this.state.currentTodos.findIndex(
+            (x) => x.id === response.data.id
+          );
+          const todos = update(this.state.currentTodos, {
+            [todoIndex]: { $set: todo },
+          });
+          this.setState({ currentTodos: todos });
+          if (todo.completed) {
+            toast.success("Task completed! 👍");
+          } else {
+            toast.warning("Task re-marked as undone. ☹️");
+          }
+        })
+        .catch((error) =>
+          toast.error(`Oops! Something went wrong! 😵\n${error}`)
         );
-        const todos = update(this.state.currentTodos, {
-          [todoIndex]: { $set: todo },
-        });
-        this.setState({ currentTodos: todos });
-        if (todo.completed) {
-          toast.success("Task completed! 👍");
-        } else {
-          toast.warning("Task re-marked as undone. ☹️");
-        }
-      })
-      .catch((error) =>
-        toast.error(`Oops! Something went wrong! 😵\n${error}`)
-      );
+    }
   }
 
   render() {

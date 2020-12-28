@@ -1,4 +1,5 @@
 import EmptyToDo from "./EmptyToDo";
+import { toast } from "react-toastify";
 
 const viewList = () => ({
   mainToDo: EmptyToDo(),
@@ -10,4 +11,13 @@ const viewToDo = (data) => ({
   mode: data.mode,
 });
 
-export { viewList, viewToDo };
+const checkLoginStatus = (loggedInStatus) => {
+  if (loggedInStatus === "LOGGED_IN") {
+    return true;
+  } else {
+    toast.error(`Oops! Something went wrong! 😵`);
+    return false;
+  }
+};
+
+export { viewList, viewToDo, checkLoginStatus };
