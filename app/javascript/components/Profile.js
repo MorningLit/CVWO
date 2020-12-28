@@ -40,10 +40,7 @@ export class Profile extends Component {
           <h1>Profile</h1>
           <h1>Hello {this.props.user.name}!</h1>
           <h1>Status: {this.props.loggedInStatus}</h1>
-          <StyledButton
-            className="btn btn-primary"
-            onClick={() => this.handleLogoutClick()}
-          >
+          <StyledButton onClick={() => this.handleLogoutClick()}>
             Logout
           </StyledButton>
         </ProfileDiv>

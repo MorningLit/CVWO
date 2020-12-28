@@ -31,7 +31,6 @@ function LoginPage(props) {
 
   const handleSuccessfulAuth = (data) => {
     props.handleLogin(data);
-    props.history.push("/dashboard");
   };
 
   return (
