@@ -5,7 +5,7 @@ class Api::V1::TodosController < ApplicationController
     end
    
     def create
-        user = User.find_by(email: params["user"]["email"])
+      user = User.find_by(email: user_params[:email])
         if user
             todoParams = todo_params
             todoParams[:user_id] = user.id
@@ -34,7 +34,11 @@ class Api::V1::TodosController < ApplicationController
     private
   
     def todo_params
-      params.require(:todo).permit(:id, :title, :description, :color, :completed, :start, :end)
+      params.require(:todo).permit(:title, :description, :color, :completed, :start, :end)
+    end
+
+    def user_params
+      params.require(:user).permit(:email)
     end
 
   end
