@@ -7,3 +7,6 @@ textarea {
   display: block;
   width: 100%;
 }
+.react-tags__search input {
+  width: 100% !important;
+}

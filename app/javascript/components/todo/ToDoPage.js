@@ -53,6 +53,8 @@ export class ToDoPage extends PureComponent {
     this.handleChangeColor = this.handleChangeColor.bind(this);
     this.handleChangeStart = this.handleChangeStart.bind(this);
     this.handleChangeEnd = this.handleChangeEnd.bind(this);
+    this.onAddition = this.onAddition.bind(this);
+    this.onDelete = this.onDelete.bind(this);
   }
 
   componentDidMount() {
@@ -236,6 +238,29 @@ export class ToDoPage extends PureComponent {
     }
   }
 
+  onDelete(i) {
+    const tags = this.state.mainToDo.tags.slice(0);
+    tags.splice(i, 1);
+    this.setState((prevState) => ({
+      ...prevState,
+      mainToDo: {
+        ...prevState.mainToDo,
+        tags: tags,
+      },
+    }));
+  }
+
+  onAddition(tag) {
+    const tags = [...this.state.mainToDo.tags, tag];
+    this.setState((prevState) => ({
+      ...prevState,
+      mainToDo: {
+        ...prevState.mainToDo,
+        tags: tags,
+      },
+    }));
+  }
+
   render() {
     const { currentTodos, mainToDo, loading, mode } = this.state;
 
@@ -268,6 +293,8 @@ export class ToDoPage extends PureComponent {
               createTodo={this.createTodo}
               handleChangeStart={this.handleChangeStart}
               handleChangeEnd={this.handleChangeEnd}
+              onDelete={this.onDelete}
+              onAddition={this.onAddition}
             />
           </ToDoViewerSection>
         ) : null}

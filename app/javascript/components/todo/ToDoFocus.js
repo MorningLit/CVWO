@@ -10,6 +10,8 @@ import Tooltip from "react-bootstrap/Tooltip";
 import "../style/ToDoForm.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import ReactTags from "react-tag-autocomplete";
+import { toast } from "react-toastify";
 
 const ToDoForm = styled(Form)`
   width: stretch;
@@ -18,6 +20,16 @@ const ToDoForm = styled(Form)`
   justify-content: space-between;
   padding: 4px;
   margin: 2px;
+`;
+
+const DateDiv = styled.div`
+  width: 50%;
+  display: block;
+`;
+
+const DateWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
 `;
 
 function ToDoFocus(props) {
@@ -33,6 +45,13 @@ function ToDoFocus(props) {
       Delete
     </Tooltip>
   );
+
+  const onValidate = (tag) => {
+    if (tag.name.length > 10) {
+      toast.error(`Tag rejected! 🚫\nKeep your tags to a max length of 10!`);
+    }
+    return tag.name.length <= 10;
+  };
 
   return (
     <Fragment>
@@ -63,41 +82,42 @@ function ToDoFocus(props) {
           <Form.Label>Description</Form.Label>
           <Form.Control
             as="textarea"
-            rows={4}
+            rows={2}
             name="description"
             value={mainToDo.description}
             onChange={props.handleChange}
           />
         </Form.Group>
 
-        <Form.Group controlId="ToDoStart">
-          <Form.Label>Start</Form.Label>
-          <DatePicker
-            selected={new Date(mainToDo.start)}
-            onChange={props.handleChangeStart}
-            dateFormat="Pp"
-            showTimeSelect
-            selectsStart
-            startDate={mainToDo.start}
-            endDate={mainToDo.end}
-            required
-          />
-        </Form.Group>
-
-        <Form.Group controlId="ToDoEnd">
-          <Form.Label>End</Form.Label>
-          <DatePicker
-            selected={new Date(mainToDo.end)}
-            onChange={props.handleChangeEnd}
-            dateFormat="Pp"
-            showTimeSelect
-            selectsEnd
-            startDate={mainToDo.start}
-            endDate={mainToDo.end}
-            minDate={mainToDo.start}
-            required
-          />
-        </Form.Group>
+        <DateWrapper>
+          <DateDiv>
+            <Form.Label>Start</Form.Label>
+            <DatePicker
+              selected={new Date(mainToDo.start)}
+              onChange={props.handleChangeStart}
+              dateFormat="Pp"
+              showTimeSelect
+              selectsStart
+              startDate={mainToDo.start}
+              endDate={mainToDo.end}
+              required
+            />
+          </DateDiv>
+          <DateDiv>
+            <Form.Label>End</Form.Label>
+            <DatePicker
+              selected={new Date(mainToDo.end)}
+              onChange={props.handleChangeEnd}
+              dateFormat="Pp"
+              showTimeSelect
+              selectsEnd
+              startDate={mainToDo.start}
+              endDate={mainToDo.end}
+              minDate={mainToDo.start}
+              required
+            />
+          </DateDiv>
+        </DateWrapper>
 
         <Form.Group controlId="ToDoColor">
           <Form.Label>Color</Form.Label>
@@ -106,6 +126,18 @@ function ToDoFocus(props) {
             value={mainToDo.color}
             colors={Array.from(colors.keys())}
             width="stretch"
+          />
+        </Form.Group>
+
+        <Form.Group controlId="ToDoTags">
+          <Form.Label>Tags</Form.Label>
+          <ReactTags
+            tags={props.mainToDo.tags}
+            allowNew={true}
+            onDelete={props.onDelete}
+            onAddition={props.onAddition}
+            onValidate={onValidate}
+            // wait for this library to update to add max tags
           />
         </Form.Group>
 

@@ -6575,6 +6575,11 @@ react-router@5.2.0:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
+react-tag-autocomplete@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/react-tag-autocomplete/-/react-tag-autocomplete-6.1.0.tgz#9fb70149a69b33379013e5255bcd7ad97d8ec06b"
+  integrity sha512-AMhVqxEEIrOfzH0A9XrpsTaLZCVYgjjxp3DSTuSvx91LBSFI6uYcKe38ltR/H/TQw4aytofVghQ1hR9sKpXRQA==
+
 react-toastify@^6.0.0-rc.3:
   version "6.0.0-rc.3"
   resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-6.0.0-rc.3.tgz#9e18bcfa91d5c470e6ba31ea1d1a204647331a7b"

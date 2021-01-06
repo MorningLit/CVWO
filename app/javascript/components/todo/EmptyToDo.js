@@ -7,5 +7,6 @@ export default function () {
     id: "",
     start: new Date(),
     end: new Date(),
+    tags: [],
   };
 }

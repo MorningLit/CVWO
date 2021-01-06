@@ -9,6 +9,8 @@ import { BsPlusSquare } from "react-icons/bs";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import EmptyToDo from "./EmptyToDo";
+import ShowTags from "./ShowTags";
+import HideTags from "./HideTags";
 
 const Container = styled.div`
   display: flex;
@@ -41,10 +43,15 @@ const List = styled(ListGroup)`
 
 function ToDoList(props) {
   const [query, setQuery] = useState("");
+  const [showTags, setShowTags] = useState(false);
 
   const handleQuery = (input) => {
     const value = input.target.value;
     setQuery(value);
+  };
+
+  const handleShowTags = () => {
+    setShowTags((prev) => !prev);
   };
 
   const list = props.currentTodos
@@ -53,6 +60,8 @@ function ToDoList(props) {
         !query || todo.title.includes(query) || todo.description.includes(query)
     )
     .map((todo) => {
+      // TODO update this
+      todo.tags = [];
       const item = { todo: todo, mode: "EDIT" };
       return (
         <ListGroup.Item
@@ -101,6 +110,13 @@ function ToDoList(props) {
           ></PlusButton>
         </OverlayTrigger>
       </SearchAddContainer>
+
+      {showTags ? (
+        <ShowTags handleShowTags={handleShowTags} />
+      ) : (
+        <HideTags handleShowTags={handleShowTags} />
+      )}
+
       <ListContainer data-simplebar>
         <List variant="flush">{list}</List>
       </ListContainer>
