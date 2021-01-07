@@ -60,8 +60,6 @@ function ToDoList(props) {
         !query || todo.title.includes(query) || todo.description.includes(query)
     )
     .map((todo) => {
-      // TODO update this
-      todo.tags = [];
       const item = { todo: todo, mode: "EDIT" };
       return (
         <ListGroup.Item

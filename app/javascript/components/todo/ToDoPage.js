@@ -68,6 +68,9 @@ export class ToDoPage extends PureComponent {
             .map((item) => {
               item.start = parseISO(item.start);
               item.end = parseISO(item.end);
+              item.tags = item.tags.map((x) => {
+                return { name: x };
+              });
               return item;
             });
           if (this._isMounted) {
@@ -87,6 +90,10 @@ export class ToDoPage extends PureComponent {
   createTodo(event) {
     const { mainToDo, mode, currentTodos } = this.state;
     if (checkLoginStatus(this.props.loggedInStatus)) {
+      const tags = mainToDo.tags.map((x) => {
+        return x.name;
+      });
+
       if (mode === "CREATE") {
         axios
           .post(
@@ -102,6 +109,7 @@ export class ToDoPage extends PureComponent {
                 completed: false,
                 start: mainToDo.start,
                 end: mainToDo.end,
+                tags: tags,
               },
             },
             {
@@ -109,10 +117,9 @@ export class ToDoPage extends PureComponent {
             }
           )
           .then((response) => {
-            response.data.start = parseISO(response.data.start);
-            response.data.end = parseISO(response.data.end);
+            mainToDo.id = response.data.id;
             const todos = update(currentTodos, {
-              $splice: [[0, 0, response.data]],
+              $splice: [[0, 0, mainToDo]],
             });
             this.setState({ currentTodos: todos });
             toast.info("Task created! 💪");
@@ -129,6 +136,7 @@ export class ToDoPage extends PureComponent {
               color: mainToDo.color,
               start: mainToDo.start,
               end: mainToDo.end,
+              tags: tags,
             },
           })
           .then((response) => {
