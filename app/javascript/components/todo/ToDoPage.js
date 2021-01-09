@@ -17,7 +17,7 @@ const BackgroundDiv = styled.div`
 `;
 
 const ToDoListSection = styled.div`
-  flex-basis: 45%;
+  width: 45vw;
   height: 100vh;
   background-color: transparent;
   display: flex;

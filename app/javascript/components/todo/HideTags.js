@@ -1,15 +1,15 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { BsCaretDown } from "react-icons/bs";
 
 function HideTags(props) {
   return (
-    <div>
+    <Fragment>
       <BsCaretDown
         size="24px"
         cursor="pointer"
         onClick={() => props.handleShowTags()}
       />
-    </div>
+    </Fragment>
   );
 }
 export default React.memo(HideTags);

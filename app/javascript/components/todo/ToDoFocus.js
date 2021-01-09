@@ -47,10 +47,17 @@ function ToDoFocus(props) {
   );
 
   const onValidate = (tag) => {
+    if (tag.name === "All") {
+      toast.error(
+        `Tag rejected! 🚫\nSorry! You're not allowed to use that tag name! 😔`
+      );
+      return false;
+    }
     if (tag.name.length > 10) {
       toast.error(`Tag rejected! 🚫\nKeep your tags to a max length of 10!`);
+      return false;
     }
-    return tag.name.length <= 10;
+    return true;
   };
 
   return (

@@ -28,6 +28,11 @@ const SearchBar = styled.div`
   width: stretch;
 `;
 
+const TagDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const PlusButton = styled(BsPlusSquare)`
   margin: 2px 3px 1px 0px;
 `;
@@ -44,6 +49,7 @@ const List = styled(ListGroup)`
 function ToDoList(props) {
   const [query, setQuery] = useState("");
   const [showTags, setShowTags] = useState(false);
+  const [activeTag, setActiveTag] = useState("All");
 
   const handleQuery = (input) => {
     const value = input.target.value;
@@ -54,11 +60,28 @@ function ToDoList(props) {
     setShowTags((prev) => !prev);
   };
 
+  const handleTagClick = (tag) => {
+    setActiveTag(tag);
+  };
+
+  const findTag = (tags) => {
+    for (let tag of tags) {
+      if (tag.name === activeTag) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   const list = props.currentTodos
     .filter(
       (todo) =>
-        !query || todo.title.includes(query) || todo.description.includes(query)
+        (!query ||
+          todo.title.includes(query) ||
+          todo.description.includes(query)) &&
+        (activeTag === "All" || findTag(todo.tags))
     )
+
     .map((todo) => {
       const item = { todo: todo, mode: "EDIT" };
       return (
@@ -78,6 +101,17 @@ function ToDoList(props) {
         </ListGroup.Item>
       );
     });
+
+  const tagSet = ["All"].concat(
+    Array.from(
+      props.currentTodos.reduce((set, { tags }) => {
+        tags.forEach((x) => {
+          set.add(x.name);
+        });
+        return set;
+      }, new Set())
+    )
+  );
 
   const renderCreateTooltip = (props) => (
     <Tooltip id="back-tooltip" {...props}>
@@ -109,11 +143,17 @@ function ToDoList(props) {
         </OverlayTrigger>
       </SearchAddContainer>
 
-      {showTags ? (
-        <ShowTags handleShowTags={handleShowTags} />
-      ) : (
-        <HideTags handleShowTags={handleShowTags} />
-      )}
+      <TagDiv>
+        {showTags ? (
+          <ShowTags
+            handleShowTags={handleShowTags}
+            tagSet={tagSet}
+            handleTagClick={handleTagClick}
+          />
+        ) : (
+          <HideTags handleShowTags={handleShowTags} />
+        )}
+      </TagDiv>
 
       <ListContainer data-simplebar>
         <List variant="flush">{list}</List>
