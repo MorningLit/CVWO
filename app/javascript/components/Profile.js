@@ -10,9 +10,20 @@ const BackgroundDiv = styled.div`
 `;
 
 const ProfileDiv = styled.div`
+  width: 90vw;
+  height: 100vh;
+`;
+
+const HeaderDiv = styled.div`
   display: flex;
-  flex-direction: column;
-  padding-left: 16px;
+  height: 10vh;
+  width: stretch;
+  justify-content: space-between;
+  padding: 8px 16px 0 16px;
+`;
+
+const LogoutButton = styled(StyledButton)`
+  width: initial;
 `;
 
 export class Profile extends Component {
@@ -37,12 +48,12 @@ export class Profile extends Component {
       <BackgroundDiv>
         <StyledNavBar />
         <ProfileDiv>
-          <h1>Profile</h1>
-          <h1>Hello {this.props.user.name}!</h1>
-          <h1>Status: {this.props.loggedInStatus}</h1>
-          <StyledButton onClick={() => this.handleLogoutClick()}>
-            Logout
-          </StyledButton>
+          <HeaderDiv>
+            <h1>Hello {this.props.user.name}!</h1>
+            <LogoutButton onClick={() => this.handleLogoutClick()}>
+              Logout
+            </LogoutButton>
+          </HeaderDiv>
         </ProfileDiv>
       </BackgroundDiv>
     );
